@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__visualize__read_me",
+      "Bash(mkdir -p /Users/edmondgottstein/unicom-gradnja/.claude)",
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/e/2PACX-1vToDh2rF_-ZEJNTtU31tM993cXtxV892PlaQoSeyHfvuqpWUfNLNf1PA8yMUK4bAcM7iyOTwOtXZCQl/pub?gid=1206913623&single=true&output=csv\")",
+      "Bash(curl -sI \"https://docs.google.com/spreadsheets/d/e/2PACX-1vToDh2rF_-ZEJNTtU31tM993cXtxV892PlaQoSeyHfvuqpWUfNLNf1PA8yMUK4bAcM7iyOTwOtXZCQl/pub?gid=1206913623&single=true&output=csv\" -H \"Origin: http://localhost:5173\")",
+      "Bash(curl -sI \"https://doc-0c-8o-sheets.googleusercontent.com/pub/54bogvaave6cua4cdnls17ksc4/erogsg4svb020b8cjgo1d6sis0/1784112270000/118345418876054448043/*/e@2PACX-1vToDh2rF_-ZEJNTtU31tM993cXtxV892PlaQoSeyHfvuqpWUfNLNf1PA8yMUK4bAcM7iyOTwOtXZCQl?gid=1206913623&single=true&output=csv\" -H \"Origin: http://localhost:5173\")",
+      "Skill(fewer-permission-prompts)",
+      "Skill(fewer-permission-prompts:*)",
+      "Bash(ls -la ~/.claude/projects/ 2>/dev/null | head -20)"
+    ]
+  }
+}

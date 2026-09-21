@@ -1,0 +1,1267 @@
+/* ==========================================================================
+   UNICOM GRADNJA — glavni CSS fajl (koriste ga SVE stranice sajta)
+
+   Kako je fajl organizovan:
+   1. Promenljive (boje, fontovi, razmaci) — menjaš OVDE da promeniš ceo sajt
+   2. Osnovni reset i tipografija
+   3. Komponente, redom kako se pojavljuju na sajtu (header pa naniže)
+      Svaka komponenta ima komentar oblika:
+      /* ===== STRANICA — Naziv sekcije ===== *ovde nema zvezdice, samo primer*
+   4. Responsive (mobilni prikaz) pravila NISU na dnu fajla — svako pravilo
+      stoji odmah ispod komponente na koju se odnosi, tako da kad menjaš
+      npr. izgled kartica projekata, odmah vidiš i kako se ponašaju na mobilnom.
+
+   Dva praga za mobilni prikaz koja se koriste u celom fajlu:
+   - 900px  = tablet / uži desktop
+   - 720px  = mobilni telefon
+   ========================================================================== */
+
+/* ---- 1. Promenljive: boje, font, razmaci ---- */
+:root {
+  --navy: #1f332b;          /* glavna tamna boja (tamni emerald-grafit) — header tekst, naslovi, tamne pozadine */
+  --navy-dark: #142019;     /* još tamnija varijanta — footer pozadina, tekst na akcentnim dugmićima */
+  --gold: #3f9d75;          /* akcentna boja (light emerald) — dugmad, linkovi, naglasci */
+  --gold-light: #6cbf9c;    /* svetlija varijanta akcentne boje — hover efekat na dugmićima */
+  --text-dark: #1c1c1c;     /* boja običnog teksta */
+  --text-muted: #5c6470;    /* boja "priglušenog" teksta (opisi, podnaslovi) */
+  --bg-light: #f0f7f3;      /* svetla mint/emerald pozadina za naizmenične sekcije */
+  --white: #ffffff;
+  --border: #e4ece8;        /* tanka linija/okvir za kartice, tabele, deliocima sekcija (blago zelenkasta) */
+  --border-input: #ddd;     /* okvir za forme (select, dugmad za filter) — malo tamniji od --border */
+  --radius: 6px;            /* zaobljenje ivica za dugmad */
+  --max-width: 1180px;      /* maksimalna širina sadržaja (.container) */
+}
+
+/* ---- 2. Reset i osnovna tipografija (važi na celom sajtu) ---- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 17px;   /* malo krupnije od podrazumevanih 16px — lakše za čitanje */
+  color: var(--text-dark);
+  background: var(--white);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, .logo {
+  font-family: 'Poppins', 'Inter', system-ui, sans-serif; /* naslovi koriste deblji font (Poppins) */
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
+
+/* Centrira sadržaj i ograničava širinu — koristi se na svakoj sekciji sajta */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ==========================================================================
+   SVE STRANICE — Header / navigacija (isti header je na vrhu svake stranice)
+   ========================================================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-light); /* blago osenčeno umesto čisto belo */
+  box-shadow: 0 1px 16px rgba(20,32,25,0.08); /* meka senka umesto ravne linije — malo više dubine */
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  color: var(--navy);
+}
+
+.logo span {
+  color: var(--gold);
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.main-nav {
+  display: flex;
+  gap: 32px;
+}
+
+.main-nav a {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-dark);
+  padding: 8px 2px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+/* Podvlačenje zlatnom bojom na hover i na "active" linku (trenutna stranica) */
+.main-nav a:hover,
+.main-nav a.active {
+  color: var(--navy);
+  border-bottom-color: var(--gold);
+}
+
+/* Hamburger dugme — sakriveno na desktopu, prikazano tek ispod 720px (vidi media query ispod) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--navy);
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+/* Mobilni meni: na širem ekranu .main-nav je običan red linkova (gore).
+   Ispod 720px postaje padajući meni koji se otvara/zatvara klikom na hamburger
+   (JS u script.js samo dodaje/skida klasu "open" na #main-nav). */
+@media (max-width: 720px) {
+  .nav-toggle { display: flex; }
+
+  .main-nav {
+    position: absolute;
+    top: 76px;
+    left: 0;
+    right: 0;
+    background: var(--bg-light);
+    flex-direction: column;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .main-nav.open { max-height: 320px; }
+
+  .main-nav a {
+    padding: 16px 24px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+}
+
+/* ==========================================================================
+   SVE STRANICE — Dugmad (.btn-primary = puno zlatno, .btn-outline = samo okvir)
+   ========================================================================== */
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 15px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--white); /* belo umesto tamnog teksta — na emerald pozadini se tamno slabo vidi */
+  box-shadow: 0 6px 18px rgba(63,157,117,0.28); /* blagi "glow" u boji akcenta — daje malo lifta dugmetu */
+}
+
+.btn-primary:hover {
+  background: var(--gold-light);
+  box-shadow: 0 8px 22px rgba(63,157,117,0.38);
+}
+
+/* Outline dugme se koristi preko tamnih/slika pozadina (npr. hero sekcija) */
+.btn-outline {
+  border: 1.5px solid rgba(255,255,255,0.7);
+  color: var(--white);
+}
+
+.btn-outline:hover { background: rgba(255,255,255,0.12); }
+
+/* ==========================================================================
+   SLAJDER (generička komponenta) — koristi se na 2 mesta:
+   1) Početna (index.html)   → veliki hero slajder sa naslovom i dugmićima (.slider.hero)
+   2) Projekat (projekat.html) → galerija slika projekta (.slider.gallery)
+
+   Kako radi: script.js nađe svaki ".slider" na strani i sam upravlja
+   slajdovima/tačkicama/strelicama — dovoljno je dodati istu HTML strukturu
+   (.slider-slide, .slider-dot, .slider-prev/.slider-next) na novoj stranici
+   i JS će je automatski pokrenuti.
+   ========================================================================== */
+.slider {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.slider-slide.active { opacity: 1; }
+
+.slider-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+}
+
+.slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--white);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.slider-dot.active { background: var(--gold); border-color: var(--gold); }
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: var(--white);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.slider-arrow:hover { background: rgba(255,255,255,0.35); }
+.slider-prev { left: 20px; }
+.slider-next { right: 20px; }
+
+/* --- Varijanta 1: Hero slajder (samo Početna) --- */
+.slider.hero { height: 640px; }
+
+/* Taman preliv preko slike da bekli tekst ostane čitljiv */
+.slider-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20,32,25,0.5) 0%, rgba(20,32,25,0.75) 100%);
+}
+
+.slider-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: var(--white);
+  max-width: 720px;
+  padding: 0 24px;
+}
+
+.hero-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-light);
+  margin-bottom: 16px;
+}
+
+.slider-content h1 {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 18px;
+}
+
+.hero-sub {
+  font-size: 17px;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 32px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 720px) {
+  .slider.hero { height: 560px; }
+  .slider-content h1 { font-size: 32px; }
+  .hero-sub { font-size: 15px; }
+  .slider-arrow { display: none; } /* na malom ekranu ostaju samo tačkice */
+}
+
+/* --- Varijanta 2: Galerija slika na strani projekta (samo projekat.html) --- */
+.slider.gallery {
+  height: 440px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+/* Blagi taman preliv pri dnu, samo da se tačkice bolje vide na svetlim slikama */
+.slider.gallery::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 65%, rgba(0,0,0,0.35) 100%);
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .slider.gallery { height: 300px; }
+}
+
+/* ==========================================================================
+   POČETNA (index.html) — Traka sa brojkama (godine iskustva, broj projekata...)
+   ========================================================================== */
+.stats {
+  background: var(--navy);
+  padding: 40px 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.stat-label {
+  display: block;
+  font-size: 14px;
+  color: rgba(255,255,255,0.75);
+  margin-top: 6px;
+}
+
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); row-gap: 28px; }
+}
+
+/* ==========================================================================
+   Naslov sekcije sa podnaslovom, centriran — mali reusable komad,
+   trenutno se ne koristi na aktivnim stranicama ali je ostavljen za dalje sekcije.
+   ========================================================================== */
+.section-head {
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto 48px;
+}
+
+.section-head h2 {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+
+/* Mala akcentna crtica iznad centriranih naslova sekcija — čisto dekorativno,
+   daje malo "brenda" umesto da naslov samo tako stoji na strani */
+.section-head h2::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--gold);
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+
+.section-head p {
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+/* ==========================================================================
+   Kartica projekta (.project-card) — reusable komad koji se koristi na:
+   - Početna (index.html)   → "Aktuelni projekti" (3 kartice)
+   - Projekti (projekti.html) → puna mreža svih projekata
+   ========================================================================== */
+.projects-teaser {
+  padding: 88px 0;
+  background: var(--bg-light);
+}
+
+/* Flex (ne grid!) namerno — kad ima malo projekata (realno 1, možda 2),
+   kartice se lepo centriraju umesto da ostanu zalepljene levo sa praznim
+   prostorom desno. grow:0 znači da kartice ne postaju "razvučene" da
+   popune red — svaka drži svoju širinu (~340px), a shrink:1 dozvoljava
+   da se stisnu na uskom (mobilnom) ekranu. Kad ima 3+ projekata, sami
+   se ređaju u nove redove (flex-wrap), i dalje centrirano. */
+.projects-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px;
+}
+
+.project-card {
+  flex: 0 1 340px;
+  background: var(--white);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(20,32,25,0.07);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 26px rgba(20,32,25,0.14);
+}
+
+.project-thumb {
+  position: relative;
+  height: 190px;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Veće kartice kad ima malo projekata (klase count-1 / count-2 dodaje
+   script.js, funkcija initProjectsGridSizing — vidi tamo kako broji).
+   Sa 3+ projekata ostaje podrazumevana veličina (340px / 190px) gore. */
+.projects-grid.count-2 .project-card { flex-basis: 460px; }
+.projects-grid.count-2 .project-thumb { height: 260px; }
+
+.projects-grid.count-1 .project-card { flex-basis: 640px; }
+.projects-grid.count-1 .project-thumb { height: 380px; }
+
+@media (max-width: 720px) {
+  /* Na mobilnom su kartice pune širine ekrana, pa veća fiksna visina
+     slike (380px/260px) izgleda nezgrapno — vraćamo je na podrazumevanu. */
+  .projects-grid.count-1 .project-thumb,
+  .projects-grid.count-2 .project-thumb { height: 220px; }
+}
+
+/* Oznaka "U izgradnji" / "U prodaji" u gornjem levom uglu slike */
+.badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: var(--white);
+}
+
+.badge-active { background: var(--gold); }  /* "U izgradnji" — tekst ostaje belo (nasleđeno iz .badge), tamno se ne vidi na emerald pozadini */
+.badge-sale { background: var(--navy); }    /* "U prodaji" */
+
+.project-info {
+  padding: 20px 22px 24px;
+}
+
+.project-info h3 {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.project-info p {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.project-meta {
+  font-size: 13px;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.teaser-cta {
+  text-align: center;
+  margin-top: 48px;
+}
+
+/* ==========================================================================
+   POČETNA (index.html) — "O preduzeću" teaser sekcija (kratak tekst + slika)
+   ========================================================================== */
+.about-teaser {
+  padding: 96px 0;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .about-image { order: -1; height: 280px; } /* slika ide iznad teksta na užem ekranu */
+}
+
+.about-text h2 {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 18px;
+}
+
+.about-text h2::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--gold);
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+
+.about-text p {
+  color: var(--text-muted);
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 22px;
+}
+
+.link-arrow {
+  font-weight: 600;
+  color: var(--navy);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 3px;
+}
+
+.about-image {
+  height: 380px;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+}
+
+/* ==========================================================================
+   UNUTRAŠNJE STRANICE — Banner na vrhu (naslov preko slike). Koristi ga:
+   o-nama.html, kontakt.html, projekti.html, reference.html
+   ========================================================================== */
+.page-banner {
+  position: relative;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--white);
+  background-size: cover;
+  background-position: center;
+}
+
+.page-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20,32,25,0.55) 0%, rgba(20,32,25,0.8) 100%);
+}
+
+.page-banner-content {
+  position: relative;
+  z-index: 2;
+}
+
+.page-banner-content .eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-light);
+  margin-bottom: 10px;
+}
+
+.page-banner-content h1 {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .page-banner-content h1 { font-size: 28px; }
+}
+
+/* Osnovni "razmak odozgo/odozdo" za sekcije na unutrašnjim stranicama.
+   Dodaj klasu "bg-light" za bež pozadinu (npr. naizmenične sekcije). */
+.content-section { padding: 80px 0; }
+.content-section.bg-light { background: var(--bg-light); }
+
+/* ==========================================================================
+   O NAMA (o-nama.html) — uvodni tekst + 3 kartice vrednosti firme
+   ========================================================================== */
+.about-lead {
+  max-width: 760px;
+  margin: 0 auto 56px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+@media (max-width: 900px) {
+  .values-grid { grid-template-columns: 1fr; }
+}
+
+.value-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 32px 28px;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(20,32,25,0.05);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.value-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 26px rgba(20,32,25,0.1);
+}
+
+.value-card .value-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--bg-light);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 auto 18px;
+}
+
+.value-card h3 {
+  font-size: 18px;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+
+.value-card p {
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+/* ==========================================================================
+   KONTAKT (kontakt.html) — podaci za kontakt (levo) + mapa (desno)
+   ========================================================================== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.3fr;
+  gap: 48px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+
+.contact-info h2 {
+  font-size: 24px;
+  color: var(--navy);
+  margin-bottom: 18px;
+}
+
+.contact-item { margin-bottom: 22px; }
+
+.contact-item .label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.contact-item .value {
+  font-size: 16px;
+  color: var(--text-dark);
+}
+
+.map-wrap {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  height: 420px;
+}
+
+.map-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* ==========================================================================
+   Filter dugmad (pilule) — koristi se na:
+   - Reference (reference.html) → filter po projektu
+   JS (initGalleryFilter u script.js) dodaje/skida klasu "active"
+   ========================================================================== */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 48px;
+}
+
+.filter-btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: 1px solid var(--border-input);
+  background: var(--white);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover { border-color: var(--gold); }
+
+.filter-btn.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--white);
+}
+
+/* ==========================================================================
+   REFERENCE (reference.html) — blok po završenom projektu (naslov + slike)
+   ========================================================================== */
+.gallery-project-block { margin-bottom: 64px; }
+
+.gallery-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 18px;
+}
+
+.gallery-meta-row h2 {
+  font-size: 22px;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.gallery-meta-row p {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.gallery-stats {
+  display: flex;
+  gap: 24px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.gallery-stats strong {
+  color: var(--gold);
+  display: block;
+  font-size: 16px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .gallery-grid { grid-template-columns: 1fr; }
+}
+
+.gallery-img {
+  height: 220px;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.gallery-img:hover { opacity: 0.85; }
+
+/* ==========================================================================
+   REFERENCE (reference.html) — lightbox (uvećan prikaz slike na klik)
+
+   Deli osnovni izgled sa .modal (tamna pozadina preko cele strane), ali
+   nema belu kartu — samo slika + strelice + dugme za zatvaranje, direktno
+   na tamnoj pozadini. initLightbox u script.js:
+   - na klik na .gallery-img upamti SVE slike iz istog .gallery-project-block
+     (da strelice prelaze samo kroz slike tog projekta, ne svih projekata)
+   - strelice/tastatura (levo/desno/Escape) menjaju prikazanu sliku
+   ========================================================================== */
+.lightbox-image {
+  max-width: 96vw;
+  max-height: 94vh;
+  border-radius: 8px;
+  display: block;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 201;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  color: var(--white);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.lightbox-close:hover { background: rgba(255,255,255,0.3); }
+
+.lightbox-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 201;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  color: var(--white);
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.lightbox-arrow:hover { background: rgba(255,255,255,0.3); }
+.lightbox-prev { left: 24px; }
+.lightbox-next { right: 24px; }
+
+@media (max-width: 720px) {
+  .lightbox-arrow { width: 40px; height: 40px; font-size: 15px; }
+  .lightbox-prev { left: 10px; }
+  .lightbox-next { right: 10px; }
+  .lightbox-close { top: 12px; right: 12px; }
+}
+
+/* ==========================================================================
+   PROJEKAT — detaljna stranica (projekat.html) — "chipovi" sa osnovnim
+   podacima o projektu (lokacija, rok, spratnost, broj stanova, kvadratura)
+   ========================================================================== */
+.project-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.meta-chip {
+  background: var(--bg-light);
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-size: 13px;
+  color: var(--text-muted);
+  border-left: 3px solid var(--gold); /* tanka akcentna ivica — malo izdvaja chipove od okolne pozadine */
+}
+
+.meta-chip strong {
+  display: block;
+  font-size: 15px;
+  color: var(--navy);
+  margin-top: 2px;
+}
+
+.project-description {
+  max-width: 800px;
+  color: var(--text-muted);
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+/* Kratka napomena o ceni, ispod glavnog opisa — link vodi na Kontakt */
+.price-note {
+  max-width: 800px;
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 48px;
+}
+
+.price-note a {
+  color: var(--gold);
+  font-weight: 600;
+  border-bottom: 1px solid var(--gold);
+}
+
+/* ==========================================================================
+   PROJEKAT — detaljna stranica (projekat.html) — filter + tabela stanova
+
+   Kako filter radi (script.js, initApartments):
+   - svaki red tabele (<tr>) ima data-sprat i data-tip atribute
+   - dropdown meniji #filter-sprat i #filter-tip menjaju koji redovi su vidljivi
+   - klik na red otvara modal (#sketch-modal, stilovi na dnu ovog fajla) sa skicom
+   ========================================================================== */
+.apartments-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 720px) {
+  .apartments-head { flex-direction: column; align-items: flex-start; }
+}
+
+.apartments-head h2 {
+  font-size: 24px;
+  color: var(--navy);
+}
+
+.apartments-filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.apartments-filters select {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border-input);
+  background: var(--white);
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text-dark);
+  cursor: pointer;
+}
+
+.filter-reset-btn {
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border-input);
+  background: var(--white);
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.filter-reset-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* overflow-x: auto — na uskom ekranu tabela se horizontalno skroluje
+   umesto da se steže i lomi (vidi min-width na .apartments-table) */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 24px;
+}
+
+/* Paginacija ispod tabele stanova — puni je script.js (renderPagination) */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 88px;
+}
+
+.page-btn {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 6px;
+  border-radius: 8px;
+  border: 1px solid var(--border-input);
+  background: var(--white);
+  color: var(--text-dark);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.page-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+.page-btn.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--white);
+}
+
+.page-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.page-btn:disabled:hover { border-color: var(--border-input); color: var(--text-dark); }
+
+.apartments-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.apartments-table th {
+  background: var(--navy);
+  color: var(--white);
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 16px 18px;
+}
+
+.apartments-table td {
+  padding: 14px 18px;
+  font-size: 14px;
+  border-top: 1px solid var(--border);
+  color: var(--text-dark);
+}
+
+.apartments-table tbody tr {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.apartments-table tbody tr:hover { background: var(--bg-light); }
+
+/* Dugme "Pregled" u tabeli stanova — klik (kao i klik bilo gde na red,
+   vidi initApartments/attachRowEvents u script.js) otvara modal sa detaljima
+   stana i skicom (PDF ako postoji, inače placeholder). */
+.view-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--gold);
+  background: var(--white);
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+
+.view-btn:hover {
+  background: var(--gold);
+  color: var(--white);
+}
+
+/* Status stana — 3 boje: zelena = dostupno, žuta = rezervisano, crvena = prodato.
+   Ako dodaješ novi status, prati isti obrazac (bg = bledo, color = tamnija nijansa iste boje). */
+.status-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-dostupno { background: #e6f0e6; color: #2f6b2f; }
+.status-rezervisano { background: #faf1de; color: #8a6a1f; }
+.status-prodato { background: #f4e4e0; color: #a34632; }
+.status-nepoznato { background: #ececec; color: #5c6470; } /* status iz sheet-a koji ne prepoznajemo — vidi normalizeStatus u script.js */
+
+/* Poruka dok se tabela stanova učitava iz Google Sheet-a (ili ako fetch ne uspe) */
+.table-status {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  padding: 40px 0;
+}
+
+/* ==========================================================================
+   PROJEKAT — detaljna stranica (projekat.html) — modal (iskačući prozor)
+   sa skicom stana. Otvara/zatvara se preko script.js (initApartments).
+   ========================================================================== */
+.modal {
+  display: none;               /* podrazumevano sakriven */
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20,32,25,0.6);
+  padding: 24px;
+}
+
+.modal.open { display: flex; } /* JS dodaje ovu klasu da otvori modal */
+
+.modal-box {
+  background: var(--white);
+  border-radius: 10px;
+  max-width: 640px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.modal-box h3 {
+  font-size: 20px;
+  color: var(--navy);
+  margin-bottom: 18px;
+}
+
+/* Prostor za skicu — script.js (initApartments) ovde ubacuje ILI iframe sa
+   pravim PDF-om skice (kad stan ima data-skica-pdf link, npr. sa Google
+   Drive-a), ILI placeholder sliku + kratku napomenu, dok prava skica ne
+   bude dostupna. Isti prostor, samo drugačiji sadržaj. */
+.modal-sketch-wrap { margin-bottom: 16px; }
+
+.modal-sketch {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-light);
+  display: block;
+}
+
+/* Iframe sa PDF-om treba dosta visine da bi skica bila čitljiva */
+.modal-sketch-frame {
+  width: 100%;
+  height: 480px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-light);
+  display: block;
+}
+
+@media (max-width: 720px) {
+  .modal-sketch-frame { height: 360px; }
+}
+
+.modal-empty-note {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 10px;
+}
+
+.modal-download { margin-bottom: 20px; }
+
+.modal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.modal-meta span strong {
+  color: var(--navy);
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/* ==========================================================================
+   SVE STRANICE — Footer (isti footer je na dnu svake stranice)
+   ========================================================================== */
+.site-footer {
+  background: var(--navy-dark);
+  color: rgba(255,255,255,0.75);
+  padding-top: 64px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 48px;
+}
+
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 720px) {
+  .footer-grid { grid-template-columns: 1fr; text-align: left; }
+}
+
+.footer-logo { margin-bottom: 14px; color: var(--white); }
+.footer-logo span { color: var(--gold); }
+
+.footer-col p { font-size: 14px; margin-bottom: 6px; }
+
+.footer-col h4 {
+  color: var(--white);
+  font-size: 15px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 14px;
+  padding: 5px 0;
+  color: rgba(255,255,255,0.75);
+  transition: color 0.2s;
+}
+
+.footer-col a:hover { color: var(--gold); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 20px 0;
+  font-size: 13px;
+  text-align: center;
+  color: rgba(255,255,255,0.5);
+}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prešernova 4-6-8 &mdash; Unicom Gradnja</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=8">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">UNICOM<span>GRADNJA</span></a>
+
+    <nav class="main-nav" id="main-nav">
+      <a href="index.html">Početna</a>
+      <a href="o-nama.html">O nama</a>
+      <a href="projekti.html" class="active">Projekti</a>
+      <a href="reference.html">Reference</a>
+      <a href="kontakt.html">Kontakt</a>
+    </nav>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="Otvori meni" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="content-section" style="padding-bottom: 0;">
+  <div class="container">
+    <p style="color: var(--gold); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Projekat u izgradnji &mdash; prva faza</p>
+    <h1 style="font-size: 34px; color: var(--navy); margin-bottom: 28px;">Prešernova 4-6-8</h1>
+
+    <div class="slider gallery" data-autoplay="4000">
+      <div class="slider-slide active" style="background-image:url('https://picsum.photos/1200/700?image=1041')"></div>
+      <div class="slider-slide" style="background-image:url('https://picsum.photos/1200/700?image=1015')"></div>
+      <div class="slider-slide" style="background-image:url('https://picsum.photos/1200/700?image=1016')"></div>
+      <div class="slider-slide" style="background-image:url('https://picsum.photos/1200/700?image=1018')"></div>
+      <div class="slider-dots">
+        <button class="slider-dot active" aria-label="Slika 1"></button>
+        <button class="slider-dot" aria-label="Slika 2"></button>
+        <button class="slider-dot" aria-label="Slika 3"></button>
+        <button class="slider-dot" aria-label="Slika 4"></button>
+      </div>
+      <button class="slider-arrow slider-prev" aria-label="Prethodna slika">&#10094;</button>
+      <button class="slider-arrow slider-next" aria-label="Sledeća slika">&#10095;</button>
+    </div>
+
+    <div class="project-meta-row">
+      <div class="meta-chip">Lokacija<strong>Prešernova 4-6-8, Beograd</strong></div>
+      <div class="meta-chip">Faza<strong>Prva faza</strong></div>
+      <div class="meta-chip">Rok završetka<strong>2027.</strong></div>
+      <div class="meta-chip">Spratnost<strong>Pr + 5</strong></div>
+      <div class="meta-chip">Ukupno stanova<strong id="meta-ukupno-stanova">&ndash;</strong></div>
+      <div class="meta-chip">Ukupna kvadratura<strong id="meta-ukupna-kvadratura">&ndash;</strong></div>
+      <div class="meta-chip">Cena<strong>od 2.500 &euro;/m&sup2;</strong></div>
+    </div>
+
+    <p class="project-description">Stambeni objekat na adresi Prešernova 4-6-8 predstavlja prvu fazu novog kompleksa koji spaja modernu arhitekturu sa funkcionalnim rasporedom stanova. Prva faza obuhvata izgradnju sa obezbeđenim parkingom i uređenim okućnjem za stanare.</p>
+
+    <p class="price-note">Cene pojedinačnih stanova zavise od sprata, pozicije i kvadrature. Za tačnu ponudu i dostupnost, <a href="kontakt.html">kontaktirajte nas</a>.</p>
+
+    <div class="apartments-head">
+      <h2>Stanovi u ponudi</h2>
+      <div class="apartments-filters">
+        <select id="filter-sprat">
+          <option value="sve">Svi spratovi</option>
+          <!-- Ostale opcije (Prizemlje, I sprat, II sprat...) dodaje script.js
+               na osnovu stvarnih spratova koji postoje u Google Sheet-u. -->
+        </select>
+        <select id="filter-tip">
+          <option value="sve">Svi tipovi</option>
+          <!-- Ostale opcije (garsonjera, jednoiposoban...) dodaje script.js
+               na osnovu stvarnih tipova koji postoje u Google Sheet-u. -->
+        </select>
+        <button class="filter-reset-btn" id="filter-reset">Poništi filtere</button>
+      </div>
+    </div>
+
+    <!-- data-csv-url = link ka Google Sheet-u (Publish to web -> CSV).
+         script.js (initApartments) ga čita, povlači podatke i sam gradi
+         redove tabele ispod. Promeni ovaj link ako ikad promeniš sheet. -->
+    <p class="table-status" id="table-status">Učitavanje stanova&hellip;</p>
+
+    <div class="table-wrap" id="table-wrap" style="display:none;">
+      <table class="apartments-table" id="apartments-table" data-csv-url="https://docs.google.com/spreadsheets/d/e/2PACX-1vToDh2rF_-ZEJNTtU31tM993cXtxV892PlaQoSeyHfvuqpWUfNLNf1PA8yMUK4bAcM7iyOTwOtXZCQl/pub?gid=1206913623&single=true&output=csv">
+        <thead>
+          <tr>
+            <th>Pregled</th>
+            <th>Stan</th>
+            <th>Sprat</th>
+            <th>Tip</th>
+            <th>Sobe</th>
+            <th>Neto m&sup2;</th>
+            <th>Komercijalna m&sup2;</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="apartments-body">
+          <!-- Redove ovde ubacuje script.js na osnovu podataka iz Google Sheet-a. -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Brojevi strana (paginacija) — script.js (renderPagination) ovde sam
+         ispiše dugmiće ‹ 1 2 3 › zavisno od toga koliko stanova ima posle
+         filtera. Prazno kad staje sve na jednu stranu. -->
+    <div class="pagination" id="pagination"></div>
+  </div>
+</section>
+
+<div class="modal" id="sketch-modal">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close" aria-label="Zatvori">&times;</button>
+    <h3 id="modal-title">Stan</h3>
+    <div class="modal-sketch-wrap" id="modal-sketch-wrap"></div>
+    <a class="btn btn-primary modal-download" id="modal-download" href="#" target="_blank" rel="noopener" style="display:none;">Preuzmi PDF skice</a>
+    <div class="modal-meta" id="modal-meta"></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-col">
+      <div class="logo footer-logo">UNICOM<span>GRADNJA</span></div>
+      <p>Izgradnja i prodaja stanova. Kvalitet u koji možete da se uzdate.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigacija</h4>
+      <a href="index.html">Početna</a>
+      <a href="o-nama.html">O nama</a>
+      <a href="projekti.html">Projekti</a>
+      <a href="reference.html">Reference</a>
+      <a href="kontakt.html">Kontakt</a>
+    </div>
+    <div class="footer-col">
+      <h4>Kontakt</h4>
+      <p>Cirila i Metodija 23, Novi Sad</p>
+      <p>021 503 810</p>
+      <p>info@unicominvest.rs</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>&copy; 2026 Unicom Gradnja. Sva prava zadržana.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js?v=9"></script>
+</body>
+</html>
