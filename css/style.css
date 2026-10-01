@@ -18,16 +18,16 @@
 
 /* ---- 1. Promenljive: boje, font, razmaci ---- */
 :root {
-  --navy: #1f332b;          /* glavna tamna boja (tamni emerald-grafit) — header tekst, naslovi, tamne pozadine */
-  --navy-dark: #142019;     /* još tamnija varijanta — footer pozadina, tekst na akcentnim dugmićima */
-  --gold: #3f9d75;          /* akcentna boja (light emerald) — dugmad, linkovi, naglasci */
-  --gold-light: #6cbf9c;    /* svetlija varijanta akcentne boje — hover efekat na dugmićima */
-  --text-dark: #1c1c1c;     /* boja običnog teksta */
-  --text-muted: #5c6470;    /* boja "priglušenog" teksta (opisi, podnaslovi) */
-  --bg-light: #f0f7f3;      /* svetla mint/emerald pozadina za naizmenične sekcije */
+  --navy: #2b2722;          /* glavna tamna boja (topli grafit/beton) — header tekst, naslovi, tamne pozadine */
+  --navy-dark: #191714;     /* još tamnija varijanta — footer pozadina, tekst na akcentnim dugmićima */
+  --gold: #a8562f;          /* akcentna boja (opeka/cigla) — dugmad, linkovi, naglasci */
+  --gold-light: #c17a4f;    /* svetlija varijanta akcentne boje — hover efekat na dugmićima */
+  --text-dark: #242220;     /* boja običnog teksta */
+  --text-muted: #6b655f;    /* boja "priglušenog" teksta (opisi, podnaslovi) */
+  --bg-light: #f5efe6;      /* svetla kamena/bež pozadina za naizmenične sekcije */
   --white: #ffffff;
-  --border: #e4ece8;        /* tanka linija/okvir za kartice, tabele, deliocima sekcija (blago zelenkasta) */
-  --border-input: #ddd;     /* okvir za forme (select, dugmad za filter) — malo tamniji od --border */
+  --border: #e7ded1;        /* tanka linija/okvir za kartice, tabele, deliocima sekcija (toplo bež) */
+  --border-input: #d9d0c2;  /* okvir za forme (select, dugmad za filter) — malo tamniji od --border */
   --radius: 6px;            /* zaobljenje ivica za dugmad */
   --max-width: 1180px;      /* maksimalna širina sadržaja (.container) */
 }
@@ -66,7 +66,7 @@ img { max-width: 100%; display: block; }
   top: 0;
   z-index: 100;
   background: var(--bg-light); /* blago osenčeno umesto čisto belo */
-  box-shadow: 0 1px 16px rgba(20,32,25,0.08); /* meka senka umesto ravne linije — malo više dubine */
+  box-shadow: 0 1px 16px rgba(25,23,20,0.08); /* meka senka umesto ravne linije — malo više dubine */
 }
 
 .header-inner {
@@ -174,12 +174,12 @@ img { max-width: 100%; display: block; }
 .btn-primary {
   background: var(--gold);
   color: var(--white); /* belo umesto tamnog teksta — na emerald pozadini se tamno slabo vidi */
-  box-shadow: 0 6px 18px rgba(63,157,117,0.28); /* blagi "glow" u boji akcenta — daje malo lifta dugmetu */
+  box-shadow: 0 6px 18px rgba(168,86,47,0.28); /* blagi "glow" u boji akcenta — daje malo lifta dugmetu */
 }
 
 .btn-primary:hover {
   background: var(--gold-light);
-  box-shadow: 0 8px 22px rgba(63,157,117,0.38);
+  box-shadow: 0 8px 22px rgba(168,86,47,0.38);
 }
 
 /* Outline dugme se koristi preko tamnih/slika pozadina (npr. hero sekcija) */
@@ -246,21 +246,46 @@ img { max-width: 100%; display: block; }
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
-  background: rgba(255,255,255,0.2);
-  border: none;
+  background: rgba(20,20,20,0.45);   /* tamna, uočljiva na svetlim i tamnim fotografijama */
+  border: 1.5px solid rgba(255,255,255,0.7);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
   color: var(--white);
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.slider-arrow:hover { background: rgba(20,20,20,0.7); transform: translateY(-50%) scale(1.06); }
+
+/* Dugme za uvećavanje slike (samo na .slider.gallery — projekat.html).
+   Isti vizuelni jezik kao strelice, u donjem desnom uglu, iznad tačkica. */
+.slider-zoom-btn {
+  position: absolute;
+  bottom: 18px;
+  right: 20px;
+  z-index: 2;
+  background: rgba(20,20,20,0.45);
+  border: 1.5px solid rgba(255,255,255,0.7);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  color: var(--white);
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   cursor: pointer;
   font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s;
 }
 
-.slider-arrow:hover { background: rgba(255,255,255,0.35); }
+.slider-zoom-btn:hover { background: rgba(20,20,20,0.7); transform: scale(1.06); }
 .slider-prev { left: 20px; }
 .slider-next { right: 20px; }
 
@@ -271,7 +296,7 @@ img { max-width: 100%; display: block; }
 .slider-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(20,32,25,0.5) 0%, rgba(20,32,25,0.75) 100%);
+  background: linear-gradient(180deg, rgba(25,23,20,0.5) 0%, rgba(25,23,20,0.75) 100%);
 }
 
 .slider-content {
@@ -435,13 +460,13 @@ img { max-width: 100%; display: block; }
   background: var(--white);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 18px rgba(20,32,25,0.07);
+  box-shadow: 0 4px 18px rgba(25,23,20,0.07);
   transition: transform 0.25s, box-shadow 0.25s;
 }
 
 .project-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 26px rgba(20,32,25,0.14);
+  box-shadow: 0 10px 26px rgba(25,23,20,0.14);
 }
 
 .project-thumb {
@@ -567,6 +592,16 @@ img { max-width: 100%; display: block; }
   background-position: center;
 }
 
+/* Isti about-grid, samo obrnut redosled (slika levo, tekst desno) — za
+   naizmenične sekcije na O nama stranici, da ne deluje monotono kad ih
+   ima više zaredom. Na mobilnom (ispod 900px) slika i dalje ide iznad
+   teksta kao i inače (vidi media query gore). */
+.about-grid-reverse .about-image { order: -1; }
+
+@media (max-width: 900px) {
+  .about-grid-reverse .about-image { order: -1; } /* već je gore, ali eksplicitno i ovde radi jasnoće */
+}
+
 /* ==========================================================================
    UNUTRAŠNJE STRANICE — Banner na vrhu (naslov preko slike). Koristi ga:
    o-nama.html, kontakt.html, projekti.html, reference.html
@@ -587,7 +622,7 @@ img { max-width: 100%; display: block; }
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(20,32,25,0.55) 0%, rgba(20,32,25,0.8) 100%);
+  background: linear-gradient(180deg, rgba(25,23,20,0.55) 0%, rgba(25,23,20,0.8) 100%);
 }
 
 .page-banner-content {
@@ -646,13 +681,13 @@ img { max-width: 100%; display: block; }
   border-radius: 10px;
   padding: 32px 28px;
   text-align: center;
-  box-shadow: 0 4px 18px rgba(20,32,25,0.05);
+  box-shadow: 0 4px 18px rgba(25,23,20,0.05);
   transition: transform 0.25s, box-shadow 0.25s;
 }
 
 .value-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 26px rgba(20,32,25,0.1);
+  box-shadow: 0 10px 26px rgba(25,23,20,0.1);
 }
 
 .value-card .value-icon {
@@ -1057,6 +1092,31 @@ img { max-width: 100%; display: block; }
   padding: 16px 18px;
 }
 
+/* Kolone po kojima se može sortirati (Neto m² / Komercijalna m²) — vidi
+   attachSortEvents u script.js. Strelica (.sort-icon) je prazna dok ta
+   kolona nije aktivna, i puni se sa ▲/▼ kad korisnik klikne na zaglavlje. */
+.apartments-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.apartments-table th.sortable:hover { background: var(--navy-dark); }
+
+.apartments-table th.sortable .sort-icon {
+  display: inline-block;
+  width: 10px;
+  margin-left: 4px;
+  font-size: 11px;
+  opacity: 0.55;             /* blaga, dok kolona nije aktivno sortirana */
+}
+
+.apartments-table th.sortable.sort-active { color: var(--gold-light); }
+.apartments-table th.sortable.sort-active .sort-icon {
+  opacity: 1;                /* puna vidljivost kad JE aktivna */
+  font-size: 9px;
+}
+
 .apartments-table td {
   padding: 14px 18px;
   font-size: 14px;
@@ -1127,7 +1187,7 @@ img { max-width: 100%; display: block; }
   z-index: 200;
   align-items: center;
   justify-content: center;
-  background: rgba(20,32,25,0.6);
+  background: rgba(25,23,20,0.6);
   padding: 24px;
 }
 

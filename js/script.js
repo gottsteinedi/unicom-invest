@@ -36,6 +36,7 @@ function initSliders() {
       current = (index + slides.length) % slides.length;
       slides[current].classList.add('active');
       if (dots[current]) dots[current].classList.add('active');
+      root.dataset.current = current; /* da initLightbox zna koji je slajd trenutno prikazan */
     }
 
     function next() { goTo(current + 1); }
@@ -54,6 +55,7 @@ function initSliders() {
     if (nextBtn) nextBtn.addEventListener('click', function () { next(); resetAutoplay(); });
     if (prevBtn) prevBtn.addEventListener('click', function () { prev(); resetAutoplay(); });
 
+    root.dataset.current = current;
     resetAutoplay();
   });
 }
@@ -128,6 +130,20 @@ function initLightbox() {
     });
   });
 
+  /* Dugme za uvećavanje na slajderu projekta (projekat.html) — otvara isti
+     lightbox, kreće od slajda koji je TRENUTNO prikazan (root.dataset.current,
+     vidi initSliders) i dozvoljava prelazak kroz sve slike tog slajdera. */
+  document.querySelectorAll('.slider-zoom-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var root = btn.closest('.slider');
+      if (!root) return;
+      var slides = Array.from(root.querySelectorAll('.slider-slide'));
+      currentUrls = slides.map(backgroundImageUrl);
+      show(parseInt(root.dataset.current, 10) || 0);
+      modal.classList.add('open');
+    });
+  });
+
   if (prevBtn) prevBtn.addEventListener('click', function () { show(currentIndex - 1); });
   if (nextBtn) nextBtn.addEventListener('click', function () { show(currentIndex + 1); });
   if (closeBtn) closeBtn.addEventListener('click', function () { modal.classList.remove('open'); });
@@ -177,6 +193,8 @@ function initApartments() {
 
   var itemsPerPage = 12; /* koliko stanova prikazujemo po strani tabele */
   var currentPage = 1;
+  var sortKey = null;  /* 'povrsina' ili 'komercijalna' — null = bez sortiranja (redosled iz sheet-a) */
+  var sortAsc = true;  /* true = rastuće, false = opadajuće */
 
   var modal = document.getElementById('sketch-modal');
   var modalClose = document.getElementById('modal-close');
@@ -204,6 +222,8 @@ function initApartments() {
       buildRows(apartments);
       updateTotals(apartments);
       attachFilterEvents();
+      attachSortEvents();
+      updateSortHeaders(Array.from(table.querySelectorAll('th.sortable')));
       attachRowEvents();
       renderTable();
       if (tableStatus) tableStatus.style.display = 'none';
@@ -242,6 +262,7 @@ function initApartments() {
       tr.dataset.sprat = a.sprat;
       tr.dataset.tip = a.tip;
       tr.dataset.skicaPdf = a.skicaPdf;
+      tr.dataset.komercijalna = parseFloat(String(a.komercijalna).replace(',', '.')) || 0;
 
       tr.innerHTML =
         '<td><button class="view-btn" aria-label="Pregled stana ' + a.stan + '">Pregled</button></td>' +
@@ -249,7 +270,6 @@ function initApartments() {
         '<td class="col-sprat">' + a.sprat + '</td>' +
         '<td class="col-tip">' + capitalize(a.tip) + '</td>' +
         '<td class="col-sobe">' + tipToSobe(a.tip) + '</td>' +
-        '<td class="col-neto">' + formatBroj(a.povrsina) + ' m&sup2;</td>' +
         '<td class="col-komercijalna">' + formatBroj(a.komercijalna) + ' m&sup2;</td>' +
         '<td class="col-status"><span class="status-pill ' + statusInfo.cls + '">' + statusInfo.label + '</span></td>';
 
@@ -260,7 +280,7 @@ function initApartments() {
   function updateTotals(apartments) {
     if (metaUkupnoStanova) metaUkupnoStanova.textContent = apartments.length;
     if (metaUkupnaKvadratura) {
-      var total = apartments.reduce(function (sum, a) { return sum + (parseFloat(a.povrsina) || 0); }, 0);
+      var total = apartments.reduce(function (sum, a) { return sum + (parseFloat(a.komercijalna) || 0); }, 0);
       metaUkupnaKvadratura.textContent = formatBroj(total) + ' m²';
     }
   }
@@ -282,6 +302,56 @@ function initApartments() {
     }
   }
 
+  /* Klik na zaglavlje kolone (Kvadratura m²) kruži kroz tri stanja:
+     isključeno -> rastuće -> opadajuće -> isključeno (nazad na originalni
+     redosled iz sheet-a) -> rastuće -> ... i tako ukrug. */
+  function attachSortEvents() {
+    var headers = Array.from(table.querySelectorAll('th.sortable'));
+    if (!headers.length) return;
+
+    headers.forEach(function (th) {
+      th.addEventListener('click', function () {
+        var key = th.dataset.sort;
+        if (sortKey !== key) {
+          sortKey = key;
+          sortAsc = true;
+        } else if (sortAsc) {
+          sortAsc = false;
+        } else {
+          sortKey = null;
+        }
+        currentPage = 1;
+        updateSortHeaders(headers);
+        renderTable();
+      });
+    });
+  }
+
+  /* Upisuje strelicu u zaglavlje: neaktivne sortirajuće kolone dobijaju
+     blagu "⇅" ikonicu (znak da se MOŽE sortirati po njoj), a aktivna
+     kolona dobija punu ▲/▼ u boji akcenta koja pokazuje trenutni smer. */
+  function updateSortHeaders(headers) {
+    headers.forEach(function (th) {
+      var icon = th.querySelector('.sort-icon');
+      var isActive = th.dataset.sort === sortKey;
+      th.classList.toggle('sort-active', isActive);
+      if (icon) icon.textContent = isActive ? (sortAsc ? '▲' : '▼') : '⇅';
+    });
+  }
+
+  /* Sortira dati niz redova po sortKey/sortAsc (brojevno poređenje preko
+     data-povrsina / data-komercijalna). Bez sortKey vraća isti redosled. */
+  function sortRows(rows) {
+    if (!sortKey) return rows;
+    var sorted = rows.slice();
+    sorted.sort(function (a, b) {
+      var av = parseFloat(a.dataset[sortKey]) || 0;
+      var bv = parseFloat(b.dataset[sortKey]) || 0;
+      return sortAsc ? av - bv : bv - av;
+    });
+    return sorted;
+  }
+
   /* Vraća samo redove koji odgovaraju trenutno izabranim filterima
      (sprat/tip) — bez obzira na paginaciju, ovo je "sve što treba da postoji
      na nekoj strani od 1 do N". */
@@ -301,7 +371,7 @@ function initApartments() {
      filtera i pri klik na broj strane. */
   function renderTable() {
     var allRows = Array.from(tbody.querySelectorAll('tr'));
-    var filtered = getFilteredRows();
+    var filtered = sortRows(getFilteredRows());
     var totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
     if (currentPage > totalPages) currentPage = totalPages;
 
@@ -360,7 +430,6 @@ function initApartments() {
         var sprat = row.querySelector('.col-sprat').textContent;
         var tip = row.querySelector('.col-tip').textContent;
         var sobe = row.querySelector('.col-sobe').textContent;
-        var neto = row.querySelector('.col-neto').textContent;
         var komercijalna = row.querySelector('.col-komercijalna').textContent;
         var status = row.querySelector('.col-status').textContent;
 
@@ -370,8 +439,7 @@ function initApartments() {
             '<span><strong>Sprat:</strong>' + sprat + '</span>' +
             '<span><strong>Tip:</strong>' + tip + '</span>' +
             '<span><strong>Sobe:</strong>' + sobe + '</span>' +
-            '<span><strong>Neto:</strong>' + neto + '</span>' +
-            '<span><strong>Komercijalna:</strong>' + komercijalna + '</span>' +
+            '<span><strong>Kvadratura:</strong>' + komercijalna + '</span>' +
             '<span><strong>Status:</strong>' + status + '</span>';
         }
 

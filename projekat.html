@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=8">
+<link rel="stylesheet" href="css/style.css?v=12">
 </head>
 <body>
 
@@ -34,19 +34,30 @@
     <p style="color: var(--gold); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Projekat u izgradnji &mdash; prva faza</p>
     <h1 style="font-size: 34px; color: var(--navy); margin-bottom: 28px;">Prešernova 4-6-8</h1>
 
-    <div class="slider gallery" data-autoplay="4000">
-      <div class="slider-slide active" style="background-image:url('https://picsum.photos/1200/700?image=1041')"></div>
-      <div class="slider-slide" style="background-image:url('https://picsum.photos/1200/700?image=1015')"></div>
-      <div class="slider-slide" style="background-image:url('https://picsum.photos/1200/700?image=1016')"></div>
-      <div class="slider-slide" style="background-image:url('https://picsum.photos/1200/700?image=1018')"></div>
+    <div class="slider gallery">
+      <div class="slider-slide active" style="background-image:url('images/presernova-4/1.jpg')"></div>
+      <div class="slider-slide" style="background-image:url('images/presernova-4/2.jpg')"></div>
+      <div class="slider-slide" style="background-image:url('images/presernova-4/3.jpg')"></div>
+      <div class="slider-slide" style="background-image:url('images/presernova-4/4.jpg')"></div>
+      <div class="slider-slide" style="background-image:url('images/presernova-4/5.jpg')"></div>
+      <div class="slider-slide" style="background-image:url('images/presernova-4/6.jpg')"></div>
+      <div class="slider-slide" style="background-image:url('images/presernova-4/7.jpg')"></div>
+      <div class="slider-slide" style="background-image:url('images/presernova-4/8.jpg')"></div>
+      <div class="slider-slide" style="background-image:url('images/presernova-4/9.jpg')"></div>
       <div class="slider-dots">
         <button class="slider-dot active" aria-label="Slika 1"></button>
         <button class="slider-dot" aria-label="Slika 2"></button>
         <button class="slider-dot" aria-label="Slika 3"></button>
         <button class="slider-dot" aria-label="Slika 4"></button>
+        <button class="slider-dot" aria-label="Slika 5"></button>
+        <button class="slider-dot" aria-label="Slika 6"></button>
+        <button class="slider-dot" aria-label="Slika 7"></button>
+        <button class="slider-dot" aria-label="Slika 8"></button>
+        <button class="slider-dot" aria-label="Slika 9"></button>
       </div>
       <button class="slider-arrow slider-prev" aria-label="Prethodna slika">&#10094;</button>
       <button class="slider-arrow slider-next" aria-label="Sledeća slika">&#10095;</button>
+      <button class="slider-zoom-btn" aria-label="Uvećaj sliku">&#128269;</button>
     </div>
 
     <div class="project-meta-row">
@@ -94,8 +105,7 @@
             <th>Sprat</th>
             <th>Tip</th>
             <th>Sobe</th>
-            <th>Neto m&sup2;</th>
-            <th>Komercijalna m&sup2;</th>
+            <th class="sortable" data-sort="komercijalna">Kvadratura m&sup2; <span class="sort-icon"></span></th>
             <th>Status</th>
           </tr>
         </thead>
@@ -120,6 +130,16 @@
     <a class="btn btn-primary modal-download" id="modal-download" href="#" target="_blank" rel="noopener" style="display:none;">Preuzmi PDF skice</a>
     <div class="modal-meta" id="modal-meta"></div>
   </div>
+</div>
+
+<!-- Lightbox — uvećan prikaz slike. Klik na dugme za uvećavanje na
+     slajderu gore otvara ovaj modal, počev od trenutno prikazane slike.
+     Strelice (i tastatura levo/desno) prelaze kroz sve slike slajdera. -->
+<div class="modal lightbox-modal" id="lightbox-modal">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Zatvori">&times;</button>
+  <button class="lightbox-arrow lightbox-prev" id="lightbox-prev" aria-label="Prethodna slika">&#10094;</button>
+  <img class="lightbox-image" id="lightbox-image" src="" alt="Uvećana slika">
+  <button class="lightbox-arrow lightbox-next" id="lightbox-next" aria-label="Sledeća slika">&#10095;</button>
 </div>
 
 <footer class="site-footer">
@@ -150,6 +170,6 @@
   </div>
 </footer>
 
-<script src="js/script.js?v=9"></script>
+<script src="js/script.js?v=11"></script>
 </body>
 </html>
