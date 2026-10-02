@@ -551,7 +551,6 @@ img { max-width: 100%; display: block; }
 
 @media (max-width: 900px) {
   .about-grid { grid-template-columns: 1fr; }
-  .about-image { order: -1; height: 280px; } /* slika ide iznad teksta na užem ekranu */
 }
 
 .about-text h2 {
@@ -592,15 +591,15 @@ img { max-width: 100%; display: block; }
   background-position: center;
 }
 
+@media (max-width: 900px) {
+  .about-image { order: -1; height: 280px; } /* slika ide iznad teksta i malo niža na užem ekranu */
+}
+
 /* Isti about-grid, samo obrnut redosled (slika levo, tekst desno) — za
    naizmenične sekcije na O nama stranici, da ne deluje monotono kad ih
    ima više zaredom. Na mobilnom (ispod 900px) slika i dalje ide iznad
    teksta kao i inače (vidi media query gore). */
 .about-grid-reverse .about-image { order: -1; }
-
-@media (max-width: 900px) {
-  .about-grid-reverse .about-image { order: -1; } /* već je gore, ali eksplicitno i ovde radi jasnoće */
-}
 
 /* ==========================================================================
    UNUTRAŠNJE STRANICE — Banner na vrhu (naslov preko slike). Koristi ga:
