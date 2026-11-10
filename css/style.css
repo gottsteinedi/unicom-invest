@@ -765,6 +765,16 @@ img { max-width: 100%; display: block; }
   display: block;
 }
 
+/* Manja mapa na stranici projekta (projekat.html), između opisa i tabele stanova */
+.map-wrap.project-map {
+  height: 280px;
+  margin: 8px 0 40px;
+}
+
+@media (max-width: 720px) {
+  .map-wrap.project-map { height: 220px; }
+}
+
 /* ==========================================================================
    Filter dugmad (pilule) — koristi se na:
    - Reference (reference.html) → filter po projektu

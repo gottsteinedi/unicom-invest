@@ -191,7 +191,7 @@ function initApartments() {
   var metaUkupnoStanova = document.getElementById('meta-ukupno-stanova');
   var metaUkupnaKvadratura = document.getElementById('meta-ukupna-kvadratura');
 
-  var itemsPerPage = 12; /* koliko stanova prikazujemo po strani tabele */
+  var itemsPerPage = 20; /* koliko stanova po strani; strane se pojavljuju tek kad ima više od 20 redova */
   var currentPage = 1;
 
   var modal = document.getElementById('sketch-modal');
@@ -277,11 +277,8 @@ function initApartments() {
   }
 
   function updateTotals(apartments) {
-    if (metaUkupnoStanova) metaUkupnoStanova.textContent = apartments.length;
-    if (metaUkupnaKvadratura) {
-      var total = apartments.reduce(function (sum, a) { return sum + (parseFloat(a.komercijalna) || 0); }, 0);
-      metaUkupnaKvadratura.textContent = formatBroj(total) + ' m²';
-    }
+    /* Ukupan broj stanova je upisan ručno u projekat.html (54) i ne računa se iz Sheet-a. */
+    /* Ukupna kvadratura je takođe upisana ručno u projekat.html (2.740 m²). */
   }
 
   function attachFilterEvents() {
@@ -330,7 +327,9 @@ function initApartments() {
   function renderTable() {
     var allRows = Array.from(tbody.querySelectorAll('tr'));
     var filtered = getFilteredRows();
-    var effectivePerPage = isMobileTable() ? Math.max(filtered.length, 1) : itemsPerPage;
+    /* Do 20 redova (npr. kad je izabran sprat ili tip) sve je na jednoj strani, bez brojeva.
+       Preko 20 (npr. svi spratovi i svi tipovi) tabela se deli na strane po 20. */
+    var effectivePerPage = (isMobileTable() || filtered.length <= itemsPerPage) ? Math.max(filtered.length, 1) : itemsPerPage;
     var totalPages = Math.max(1, Math.ceil(filtered.length / effectivePerPage));
     if (currentPage > totalPages) currentPage = totalPages;
 
