@@ -193,8 +193,6 @@ function initApartments() {
 
   var itemsPerPage = 12; /* koliko stanova prikazujemo po strani tabele */
   var currentPage = 1;
-  var sortKey = null;  /* 'povrsina' ili 'komercijalna' — null = bez sortiranja (redosled iz sheet-a) */
-  var sortAsc = true;  /* true = rastuće, false = opadajuće */
 
   var modal = document.getElementById('sketch-modal');
   var modalClose = document.getElementById('modal-close');
@@ -222,8 +220,6 @@ function initApartments() {
       buildRows(apartments);
       updateTotals(apartments);
       attachFilterEvents();
-      attachSortEvents();
-      updateSortHeaders(Array.from(table.querySelectorAll('th.sortable')));
       attachRowEvents();
       renderTable();
       if (tableStatus) tableStatus.style.display = 'none';
@@ -265,8 +261,11 @@ function initApartments() {
       tr.dataset.komercijalna = parseFloat(String(a.komercijalna).replace(',', '.')) || 0;
 
       tr.innerHTML =
-        '<td><button class="view-btn" aria-label="Pregled stana ' + a.stan + '">Pregled</button></td>' +
-        '<td>' + a.stan + '</td>' +
+        '<td class="col-pregled"><button class="view-btn" aria-label="Pregled stana ' + a.stan + '">' +
+          '<span class="view-btn-text">Pregled</span>' +
+          '<span class="view-btn-icon" aria-hidden="true">&#128269;</span>' +
+        '</button></td>' +
+        '<td class="col-stan">' + a.stan + '</td>' +
         '<td class="col-sprat">' + a.sprat + '</td>' +
         '<td class="col-tip">' + capitalize(a.tip) + '</td>' +
         '<td class="col-sobe">' + tipToSobe(a.tip) + '</td>' +
@@ -302,56 +301,6 @@ function initApartments() {
     }
   }
 
-  /* Klik na zaglavlje kolone (Kvadratura m²) kruži kroz tri stanja:
-     isključeno -> rastuće -> opadajuće -> isključeno (nazad na originalni
-     redosled iz sheet-a) -> rastuće -> ... i tako ukrug. */
-  function attachSortEvents() {
-    var headers = Array.from(table.querySelectorAll('th.sortable'));
-    if (!headers.length) return;
-
-    headers.forEach(function (th) {
-      th.addEventListener('click', function () {
-        var key = th.dataset.sort;
-        if (sortKey !== key) {
-          sortKey = key;
-          sortAsc = true;
-        } else if (sortAsc) {
-          sortAsc = false;
-        } else {
-          sortKey = null;
-        }
-        currentPage = 1;
-        updateSortHeaders(headers);
-        renderTable();
-      });
-    });
-  }
-
-  /* Upisuje strelicu u zaglavlje: neaktivne sortirajuće kolone dobijaju
-     blagu "⇅" ikonicu (znak da se MOŽE sortirati po njoj), a aktivna
-     kolona dobija punu ▲/▼ u boji akcenta koja pokazuje trenutni smer. */
-  function updateSortHeaders(headers) {
-    headers.forEach(function (th) {
-      var icon = th.querySelector('.sort-icon');
-      var isActive = th.dataset.sort === sortKey;
-      th.classList.toggle('sort-active', isActive);
-      if (icon) icon.textContent = isActive ? (sortAsc ? '▲' : '▼') : '⇅';
-    });
-  }
-
-  /* Sortira dati niz redova po sortKey/sortAsc (brojevno poređenje preko
-     data-povrsina / data-komercijalna). Bez sortKey vraća isti redosled. */
-  function sortRows(rows) {
-    if (!sortKey) return rows;
-    var sorted = rows.slice();
-    sorted.sort(function (a, b) {
-      var av = parseFloat(a.dataset[sortKey]) || 0;
-      var bv = parseFloat(b.dataset[sortKey]) || 0;
-      return sortAsc ? av - bv : bv - av;
-    });
-    return sorted;
-  }
-
   /* Vraća samo redove koji odgovaraju trenutno izabranim filterima
      (sprat/tip) — bez obzira na paginaciju, ovo je "sve što treba da postoji
      na nekoj strani od 1 do N". */
@@ -365,18 +314,28 @@ function initApartments() {
     });
   }
 
+  /* Na mobilnom (ispod 720px) tabela stanova prikazuje manje kolona
+     (vidi CSS) i učitava se cela odjednom, bez paginacije — zato ovde
+     "stranica" postaje cela lista kad je ekran uzak. */
+  function isMobileTable() {
+    return window.matchMedia('(max-width: 720px)').matches;
+  }
+
   /* Glavna funkcija za prikaz tabele: primeni filter, izračunaj koliko
      strana ima (na osnovu itemsPerPage), pa prikaži samo redove koji
      pripadaju trenutnoj strani (currentPage). Zove se i pri promeni
-     filtera i pri klik na broj strane. */
+     filtera i pri klik na broj strane. Na mobilnom se paginacija
+     isključuje — effectivePerPage postaje ceo broj (filtriranih) redova,
+     pa renderPagination prirodno ne iscrta ništa (totalPages === 1). */
   function renderTable() {
     var allRows = Array.from(tbody.querySelectorAll('tr'));
-    var filtered = sortRows(getFilteredRows());
-    var totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
+    var filtered = getFilteredRows();
+    var effectivePerPage = isMobileTable() ? Math.max(filtered.length, 1) : itemsPerPage;
+    var totalPages = Math.max(1, Math.ceil(filtered.length / effectivePerPage));
     if (currentPage > totalPages) currentPage = totalPages;
 
-    var start = (currentPage - 1) * itemsPerPage;
-    var visibleOnPage = filtered.slice(start, start + itemsPerPage);
+    var start = (currentPage - 1) * effectivePerPage;
+    var visibleOnPage = filtered.slice(start, start + effectivePerPage);
 
     allRows.forEach(function (row) { row.style.display = 'none'; });
     visibleOnPage.forEach(function (row) { row.style.display = ''; });
@@ -491,6 +450,18 @@ function initApartments() {
   }
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && modal) modal.classList.remove('open');
+  });
+
+  /* Ako se pređe preko 720px praga (rotacija telefona, promena veličine
+     prozora), ponovo iscrtaj tabelu da uključi/isključi paginaciju. */
+  var wasMobileTable = isMobileTable();
+  window.addEventListener('resize', function () {
+    var nowMobileTable = isMobileTable();
+    if (nowMobileTable !== wasMobileTable) {
+      wasMobileTable = nowMobileTable;
+      currentPage = 1;
+      renderTable();
+    }
   });
 }
 

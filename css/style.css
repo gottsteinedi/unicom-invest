@@ -1091,31 +1091,6 @@ img { max-width: 100%; display: block; }
   padding: 16px 18px;
 }
 
-/* Kolone po kojima se može sortirati (Neto m² / Komercijalna m²) — vidi
-   attachSortEvents u script.js. Strelica (.sort-icon) je prazna dok ta
-   kolona nije aktivna, i puni se sa ▲/▼ kad korisnik klikne na zaglavlje. */
-.apartments-table th.sortable {
-  cursor: pointer;
-  user-select: none;
-  transition: background 0.15s;
-}
-
-.apartments-table th.sortable:hover { background: var(--navy-dark); }
-
-.apartments-table th.sortable .sort-icon {
-  display: inline-block;
-  width: 10px;
-  margin-left: 4px;
-  font-size: 11px;
-  opacity: 0.55;             /* blaga, dok kolona nije aktivno sortirana */
-}
-
-.apartments-table th.sortable.sort-active { color: var(--gold-light); }
-.apartments-table th.sortable.sort-active .sort-icon {
-  opacity: 1;                /* puna vidljivost kad JE aktivna */
-  font-size: 9px;
-}
-
 .apartments-table td {
   padding: 14px 18px;
   font-size: 14px;
@@ -1149,6 +1124,44 @@ img { max-width: 100%; display: block; }
 .view-btn:hover {
   background: var(--gold);
   color: var(--white);
+}
+
+.view-btn-icon { display: none; } /* na desktopu dugme ima samo tekst ("Pregled") */
+
+/* Mobilna tabela stanova (ispod 720px) — manje kolona (Sprat/Tip/Kvadratura
+   + lupica za pregled), bez horizontalnog skrola i bez paginacije (vidi
+   isMobileTable/renderTable u script.js, koji na ovoj širini učita sve
+   redove odjednom umesto da ih deli na strane). */
+@media (max-width: 720px) {
+  .apartments-table { min-width: 0; }
+
+  .apartments-table .col-stan,
+  .apartments-table .col-sobe,
+  .apartments-table .col-status {
+    display: none;
+  }
+
+  .apartments-table th,
+  .apartments-table td {
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+
+  .apartments-table .col-pregled { width: 1%; } /* kolona se steže na širinu dugmeta */
+
+  .view-btn-text { display: none; }
+  .view-btn-icon { display: inline-block; }
+
+  .view-btn {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
 }
 
 /* Status stana — 3 boje: zelena = dostupno, žuta = rezervisano, crvena = prodato.
