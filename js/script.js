@@ -16,6 +16,12 @@ function initNavToggle() {
       var isOpen = mainNav.classList.toggle('open');
       navToggle.setAttribute('aria-expanded', isOpen);
     });
+    mainNav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        mainNav.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
   }
 }
 
@@ -259,6 +265,7 @@ function initApartments() {
       tr.dataset.tip = a.tip;
       tr.dataset.skicaPdf = a.skicaPdf;
       tr.dataset.komercijalna = parseFloat(String(a.komercijalna).replace(',', '.')) || 0;
+      if (statusInfo.cls === 'status-prodato') tr.classList.add('is-sold'); /* prodati stanovi su sivlji u tabeli */
 
       tr.innerHTML =
         '<td class="col-pregled"><button class="view-btn" aria-label="Pregled stana ' + a.stan + '">' +
@@ -276,9 +283,29 @@ function initApartments() {
     });
   }
 
+  /* Ukupan broj stanova (54) i kvadratura (2.740 m²) su upisani ručno u projekat.html.
+     Ovde samo prebrojimo statuse iz Sheet-a i popunimo traku "dostupnost"
+     u tabli sa podacima (koliko je stanova slobodno / rezervisano / prodato). */
   function updateTotals(apartments) {
-    /* Ukupan broj stanova je upisan ručno u projekat.html (54) i ne računa se iz Sheet-a. */
-    /* Ukupna kvadratura je takođe upisana ručno u projekat.html (2.740 m²). */
+    var box = document.getElementById('availability');
+    if (!box || !apartments.length) return;
+    var counts = { 'status-dostupno': 0, 'status-rezervisano': 0, 'status-prodato': 0 };
+    apartments.forEach(function (a) {
+      var cls = normalizeStatus(a.status).cls;
+      if (counts.hasOwnProperty(cls)) counts[cls] += 1;
+    });
+    var total = counts['status-dostupno'] + counts['status-rezervisano'] + counts['status-prodato'];
+    if (!total) return;
+    function pct(n) { return (n / total * 100).toFixed(1) + '%'; }
+    document.getElementById('availability-text').textContent =
+      'Slobodno: ' + counts['status-dostupno'] + ' od ' + total + ' stanova';
+    document.getElementById('availability-bar').innerHTML =
+      '<span class="a-dostupno" style="width:' + pct(counts['status-dostupno']) + '"></span>' +
+      '<span class="a-rezervisano" style="width:' + pct(counts['status-rezervisano']) + '"></span>' +
+      '<span class="a-prodato" style="width:' + pct(counts['status-prodato']) + '"></span>';
+    document.getElementById('availability-legend').textContent =
+      'Rezervisano: ' + counts['status-rezervisano'] + ', prodato: ' + counts['status-prodato'];
+    box.hidden = false;
   }
 
   function attachFilterEvents() {
@@ -394,11 +421,11 @@ function initApartments() {
         if (modalTitle) modalTitle.textContent = 'Stan ' + stan;
         if (modalMeta) {
           modalMeta.innerHTML =
-            '<span><strong>Sprat:</strong>' + sprat + '</span>' +
-            '<span><strong>Tip:</strong>' + tip + '</span>' +
-            '<span><strong>Sobe:</strong>' + sobe + '</span>' +
-            '<span><strong>Kvadratura:</strong>' + komercijalna + '</span>' +
-            '<span><strong>Status:</strong>' + status + '</span>';
+            '<span>Sprat<strong>' + sprat + '</strong></span>' +
+            '<span>Tip<strong>' + tip + '</strong></span>' +
+            '<span>Sobe<strong>' + sobe + '</strong></span>' +
+            '<span>Kvadratura<strong>' + komercijalna + '</strong></span>' +
+            '<span>Status<strong>' + status + '</strong></span>';
         }
 
         showSketch(row.dataset.skicaPdf);

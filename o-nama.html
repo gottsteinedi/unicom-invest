@@ -3,109 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>O nama &mdash; Unicom Gradnja</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=18">
+<title>O nama | Unicom Gradnja</title>
+<meta name="description" content="Unicom je porodična firma iz Novog Sada: investitor i graditelj stambenih objekata, sa više od 15 godina iskustva i preko 600 prodatih stanova.">
+<meta name="theme-color" content="#23282b">
+<!-- Kako izgleda link kad se podeli (Viber, Facebook, WhatsApp...).
+     Kad proradi domen, zameni https://gottsteinedi.github.io/unicom-invest/ sa https://unicomgradnja.rs/ -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Unicom Gradnja">
+<meta property="og:title" content="O nama | Unicom Gradnja">
+<meta property="og:description" content="Unicom je porodična firma iz Novog Sada: investitor i graditelj stambenih objekata, sa više od 15 godina iskustva i preko 600 prodatih stanova.">
+<meta property="og:image" content="https://gottsteinedi.github.io/unicom-invest/images/presernova-4/hero.jpg">
+<meta property="og:url" content="https://gottsteinedi.github.io/unicom-invest/o-nama.html">
+<meta property="og:locale" content="sr_RS">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/style.css?v=22">
 </head>
 <body>
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href="index.html" class="logo">UNICOM<span>GRADNJA</span></a>
+    <a href="index.html" class="logo" aria-label="Unicom Gradnja, početna"><svg class="logo-mark" viewBox="0 0 26 30" aria-hidden="true"><rect y="0" width="26" height="4" fill="#c9973a"/><rect y="6.5" width="26" height="4" fill="currentColor"/><rect y="13" width="26" height="4" fill="currentColor"/><rect y="19.5" width="26" height="4" fill="currentColor"/><rect y="26" width="26" height="4" fill="currentColor"/></svg><span class="logo-text">UNICOM <span>GRADNJA</span></span></a>
 
-    <nav class="main-nav" id="main-nav">
-      <a href="index.html">Početna</a>
-      <a href="o-nama.html" class="active">O nama</a>
+    <nav class="main-nav" id="main-nav" aria-label="Glavni meni">
       <a href="projekti.html">Projekti</a>
       <a href="reference.html">Reference</a>
+      <a href="o-nama.html" class="active">O nama</a>
       <a href="kontakt.html">Kontakt</a>
     </nav>
 
-    <button class="nav-toggle" id="nav-toggle" aria-label="Otvori meni" aria-expanded="false">
+    <a href="tel:+38121503810" class="header-phone">021 503 810</a>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="Otvori meni" aria-expanded="false" aria-controls="main-nav">
       <span></span><span></span><span></span>
     </button>
   </div>
 </header>
 
-<section class="page-banner" style="background-image:url('https://images.unsplash.com/photo-1541976590-713941681591?w=1600&h=500&fit=crop&q=80&auto=format')">
-  <div class="page-banner-content">
-    <p class="eyebrow">Ko smo mi</p>
-    <h1>O nama</h1>
-  </div>
-</section>
-
-<section class="content-section">
+<main>
+<section class="page-head">
   <div class="container">
-    <p class="about-lead">Unicom Gradnja je preduzeće posvećeno kvalitetnoj i pouzdanoj izgradnji stambenih objekata. Kroz dugogodišnje iskustvo, gradimo domove koji spajaju funkcionalnost, kvalitet materijala i pažljivo planiranje &mdash; od temelja do useljenja. Naš tim prati svaki projekat od ideje do predaje ključeva, sa fokusom na transparentnost prema kupcima i poštovanje rokova.</p>
-
-    <div class="project-meta-row" style="justify-content: center;">
-      <div class="meta-chip">Firma<strong>Unicom doo</strong></div>
-      <div class="meta-chip">Adresa<strong>Cirila i Metodija 23, Novi Sad</strong></div>
-      <div class="meta-chip">Telefon<strong>021 503 810</strong></div>
-      <div class="meta-chip">Email<strong>info@unicominvest.rs</strong></div>
-    </div>
-
-    <div class="values-grid">
-      <div class="value-card">
-        <div class="value-icon">01</div>
-        <h3>Kvalitet gradnje</h3>
-        <p>Koristimo proverene materijale i izvođače kako bismo obezbedili dugotrajnost i sigurnost svakog objekta.</p>
-      </div>
-      <div class="value-card">
-        <div class="value-icon">02</div>
-        <h3>Pouzdanost</h3>
-        <p>Rokovi i dogovori se poštuju &mdash; kupci imaju jasan uvid u dinamiku izgradnje od rezervacije do useljenja.</p>
-      </div>
-      <div class="value-card">
-        <div class="value-icon">03</div>
-        <h3>Iskustvo</h3>
-        <p>Više od 15 godina na tržištu i preko 600 prodatih stanova kroz desetine završenih projekata.</p>
-      </div>
-    </div>
+    <h1>O nama</h1>
+    <p>Porodična firma koja gradi stanove u Novom Sadu.</p>
   </div>
 </section>
 
-<section class="about-teaser">
-  <div class="container about-grid">
-    <div class="about-text">
+<section class="section">
+  <div class="container split split-facts">
+    <div>
       <h2>Naša priča</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Unicom je porodična firma iz Novog Sada. Više od 15 godina gradimo stambene objekte i prodajemo stanove direktno kupcima, a za to vreme završili smo 24 projekta i prodali preko 600 stanova.</p>
+      <p>Gradimo isključivo u Novom Sadu. Grad, njegove kvartove i potrebe ljudi koji ovde žive poznajemo iz prve ruke, i to nam pomaže da biramo lokacije i projektujemo stanove u kojima se dobro živi.</p>
     </div>
-    <div class="about-image" style="background-image:url('https://images.unsplash.com/photo-1521791136064-7986c2920216?w=700&h=500&fit=crop&q=80&auto=format')"></div>
+    <div class="facts facts-stacked">
+      <div class="fact"><strong>15+</strong><span>godina iskustva</span></div>
+      <div class="fact"><strong>24</strong><span>završena projekta</span></div>
+      <div class="fact"><strong>600+</strong><span>prodatih stanova</span></div>
+    </div>
   </div>
 </section>
 
-<section class="about-teaser" style="padding-top: 0;">
-  <div class="container about-grid about-grid-reverse">
-    <div class="about-text">
+<section class="section section-beton">
+  <div class="container split split-top">
+    <div>
       <h2>Kako radimo</h2>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-      <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.</p>
     </div>
-    <div class="about-image" style="background-image:url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=700&h=500&fit=crop&q=80&auto=format')"></div>
+    <div>
+      <p>Kao investitor vodimo svaki projekat od početka do kraja: od plana i dozvola, preko gradnje, do predaje ključeva. Kupci razgovaraju direktno sa nama, bez posrednika.</p>
+      <p>Dostupnost stanova objavljujemo javno i ažuriramo je čim se stan rezerviše ili proda, a kupcima redovno pružamo informacije o tome dokle je stigla gradnja.</p>
+    </div>
   </div>
 </section>
 
-<section class="content-section bg-light">
-  <div class="container stats-grid" style="color: var(--navy);">
-    <div class="stat">
-      <span class="stat-number">15+</span>
-      <span class="stat-label" style="color: var(--text-muted);">godina iskustva</span>
+<section class="section">
+  <div class="container">
+    <h2>Do čega nam je stalo</h2>
+    <div class="benefits" style="margin-top:32px;">
+      <div class="benefit"><h3>Kvalitet gradnje</h3><p>Koristimo proverene materijale i izvođače kako bismo obezbedili dugotrajnost i sigurnost svakog objekta.</p></div>
+      <div class="benefit"><h3>Pouzdanost</h3><p>Rokovi i dogovori se poštuju. Kupci imaju jasan uvid u dinamiku izgradnje od rezervacije do useljenja.</p></div>
+      <div class="benefit"><h3>Otvorenost</h3><p>Cene, dostupnost i rokove govorimo unapred i jasno, da biste odluku doneli bez iznenađenja.</p></div>
+      <div class="benefit"><h3>Lokalno znanje</h3><p>Gradimo samo u Novom Sadu i ovde ostajemo i posle predaje ključeva.</p></div>
     </div>
-    <div class="stat">
-      <span class="stat-number">24</span>
-      <span class="stat-label" style="color: var(--text-muted);">završena projekta</span>
+  </div>
+</section>
+
+<section class="section section-beton">
+  <div class="container">
+    <h2>Podaci o firmi</h2>
+    <div class="contact-list" style="max-width:720px; margin-top:24px;">
+      <div class="contact-item"><span class="label">Naziv</span><span class="value">Unicom doo</span></div>
+      <div class="contact-item"><span class="label">Sedište</span><span class="value">Cirila i Metodija 23, 21000 Novi Sad</span></div>
+      <div class="contact-item"><span class="label">Telefon</span><a class="value" href="tel:+38121503810">021 503 810</a></div>
+      <div class="contact-item"><span class="label">Email</span><a class="value" href="mailto:info@unicominvest.rs">info@unicominvest.rs</a></div>
     </div>
-    <div class="stat">
-      <span class="stat-number">600+</span>
-      <span class="stat-label" style="color: var(--text-muted);">prodatih stanova</span>
+  </div>
+</section>
+</main>
+
+<section class="cta-band">
+  <div class="container">
+    <div>
+      <h2>Imate pitanje o stanu?</h2>
+      <p>Pozovite nas radnim danima od 9 do 17 h ili dođite u kancelariju u Ulici Cirila i Metodija 23.</p>
     </div>
-    <div class="stat">
-      <span class="stat-number">5</span>
-      <span class="stat-label" style="color: var(--text-muted);">projekata u izgradnji</span>
+    <div class="btn-row">
+      <a href="tel:+38121503810" class="btn btn-dark">Pozovite 021 503 810</a>
+      <a href="kontakt.html" class="btn btn-ghost">Kontakt i adresa</a>
     </div>
   </div>
 </section>
@@ -113,31 +116,42 @@
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-col">
-      <div class="logo footer-logo">UNICOM<span>GRADNJA</span></div>
-      <p>Izgradnja i prodaja stanova. Kvalitet u koji možete da se uzdate.</p>
+      <a href="index.html" class="logo"><svg class="logo-mark" viewBox="0 0 26 30" aria-hidden="true"><rect y="0" width="26" height="4" fill="#c9973a"/><rect y="6.5" width="26" height="4" fill="currentColor"/><rect y="13" width="26" height="4" fill="currentColor"/><rect y="19.5" width="26" height="4" fill="currentColor"/><rect y="26" width="26" height="4" fill="currentColor"/></svg><span class="logo-text">UNICOM <span>GRADNJA</span></span></a>
+      <p>Investitor i graditelj stambenih objekata u Novom Sadu.</p>
     </div>
     <div class="footer-col">
-      <h4>Navigacija</h4>
-      <a href="index.html">Početna</a>
+      <h4>Stanovi</h4>
+      <a href="projekat.html">Prešernova 8</a>
+      <a href="projekat.html#stanovi">Slobodni stanovi</a>
+      <a href="projekti.html">Svi projekti</a>
+    </div>
+    <div class="footer-col">
+      <h4>Firma</h4>
       <a href="o-nama.html">O nama</a>
-      <a href="projekti.html">Projekti</a>
       <a href="reference.html">Reference</a>
       <a href="kontakt.html">Kontakt</a>
     </div>
     <div class="footer-col">
       <h4>Kontakt</h4>
-      <p>Cirila i Metodija 23, Novi Sad</p>
-      <p>021 503 810</p>
-      <p>info@unicominvest.rs</p>
+      <p>Cirila i Metodija 23<br>21000 Novi Sad</p>
+      <a href="tel:+38121503810">021 503 810</a>
+      <a href="mailto:info@unicominvest.rs">info@unicominvest.rs</a>
+      <p>Ponedeljak – petak, 9–17 h</p>
     </div>
   </div>
   <div class="footer-bottom">
     <div class="container">
-      <p>&copy; 2026 Unicom Gradnja. Sva prava zadržana.</p>
+      <p>&copy; 2026 Unicom doo, Novi Sad. Sva prava zadržana.</p>
     </div>
   </div>
 </footer>
 
-<script src="js/script.js?v=17"></script>
+<!-- Donja traka sa 2 glavne akcije — vidi se samo na telefonu -->
+<div class="mobile-bar">
+  <a href="tel:+38121503810" class="btn btn-dark">Pozovite</a>
+  <a href="projekat.html#stanovi" class="btn btn-primary">Slobodni stanovi</a>
+</div>
+
+<script src="js/script.js?v=18"></script>
 </body>
 </html>

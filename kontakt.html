@@ -3,100 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kontakt &mdash; Unicom Gradnja</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=18">
+<title>Kontakt | Unicom Gradnja</title>
+<meta name="description" content="Kontakt Unicom Gradnje: Cirila i Metodija 23, Novi Sad. Telefon 021 503 810, radnim danima od 9 do 17 h.">
+<meta name="theme-color" content="#23282b">
+<!-- Kako izgleda link kad se podeli (Viber, Facebook, WhatsApp...).
+     Kad proradi domen, zameni https://gottsteinedi.github.io/unicom-invest/ sa https://unicomgradnja.rs/ -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Unicom Gradnja">
+<meta property="og:title" content="Kontakt | Unicom Gradnja">
+<meta property="og:description" content="Kontakt Unicom Gradnje: Cirila i Metodija 23, Novi Sad. Telefon 021 503 810, radnim danima od 9 do 17 h.">
+<meta property="og:image" content="https://gottsteinedi.github.io/unicom-invest/images/presernova-4/hero.jpg">
+<meta property="og:url" content="https://gottsteinedi.github.io/unicom-invest/kontakt.html">
+<meta property="og:locale" content="sr_RS">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/style.css?v=22">
 </head>
 <body>
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href="index.html" class="logo">UNICOM<span>GRADNJA</span></a>
+    <a href="index.html" class="logo" aria-label="Unicom Gradnja, početna"><svg class="logo-mark" viewBox="0 0 26 30" aria-hidden="true"><rect y="0" width="26" height="4" fill="#c9973a"/><rect y="6.5" width="26" height="4" fill="currentColor"/><rect y="13" width="26" height="4" fill="currentColor"/><rect y="19.5" width="26" height="4" fill="currentColor"/><rect y="26" width="26" height="4" fill="currentColor"/></svg><span class="logo-text">UNICOM <span>GRADNJA</span></span></a>
 
-    <nav class="main-nav" id="main-nav">
-      <a href="index.html">Početna</a>
-      <a href="o-nama.html">O nama</a>
+    <nav class="main-nav" id="main-nav" aria-label="Glavni meni">
       <a href="projekti.html">Projekti</a>
       <a href="reference.html">Reference</a>
+      <a href="o-nama.html">O nama</a>
       <a href="kontakt.html" class="active">Kontakt</a>
     </nav>
 
-    <button class="nav-toggle" id="nav-toggle" aria-label="Otvori meni" aria-expanded="false">
+    <a href="tel:+38121503810" class="header-phone">021 503 810</a>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="Otvori meni" aria-expanded="false" aria-controls="main-nav">
       <span></span><span></span><span></span>
     </button>
   </div>
 </header>
 
-<section class="page-banner" style="background-image:url('https://images.unsplash.com/photo-1448630360428-65456885c650?w=1600&h=500&fit=crop&q=80&auto=format')">
-  <div class="page-banner-content">
-    <p class="eyebrow">Javite nam se</p>
+<main>
+<section class="page-head">
+  <div class="container">
     <h1>Kontakt</h1>
+    <p>Pitajte nas o stanovima, cenama i dostupnosti.</p>
   </div>
 </section>
 
-<section class="content-section">
+<section class="section">
   <div class="container contact-grid">
-    <div class="contact-info">
-      <h2>Podaci za kontakt</h2>
+    <div>
+      <p class="contact-hint" style="margin-bottom:0;">Najbrže je telefonom:</p>
+      <a href="tel:+38121503810" class="contact-big">021 503 810</a>
+      <p class="contact-hint">Radnim danima od 9 do 17 h.</p>
 
-      <div class="contact-item">
-        <span class="label">Firma</span>
-        <span class="value">Unicom doo</span>
+      <div class="contact-list">
+        <div class="contact-item"><span class="label">Firma</span><span class="value">Unicom doo</span></div>
+        <div class="contact-item"><span class="label">Adresa</span><span class="value">Cirila i Metodija 23, 21000 Novi Sad</span></div>
+        <div class="contact-item"><span class="label">Email</span><a class="value" href="mailto:info@unicominvest.rs">info@unicominvest.rs</a></div>
+        <div class="contact-item"><span class="label">Radno vreme</span><span class="value">Ponedeljak – petak, 09:00 – 17:00</span></div>
       </div>
-      <div class="contact-item">
-        <span class="label">Adresa</span>
-        <span class="value">Cirila i Metodija 23, Novi Sad</span>
-      </div>
-      <div class="contact-item">
-        <span class="label">Telefon</span>
-        <span class="value">021 503 810</span>
-      </div>
-      <div class="contact-item">
-        <span class="label">Email</span>
-        <span class="value">info@unicominvest.rs</span>
-      </div>
-      <div class="contact-item">
-        <span class="label">Radno vreme</span>
-        <span class="value">Ponedeljak &ndash; petak, 09:00 &ndash; 17:00</span>
+
+      <div class="btn-row" style="margin-top:28px;">
+        <a href="https://www.google.com/maps/search/?api=1&query=Cirila+i+Metodija+23,+Novi+Sad" class="btn btn-dark" target="_blank" rel="noopener">Uputstva do kancelarije</a>
       </div>
     </div>
 
     <div class="map-wrap">
-      <iframe src="https://www.google.com/maps?q=Cirila+i+Metodija+23,+Novi+Sad&output=embed" loading="lazy" title="Lokacija kancelarije"></iframe>
+      <iframe src="https://www.google.com/maps?q=Cirila+i+Metodija+23,+Novi+Sad&output=embed" loading="lazy" title="Mapa: kancelarija Unicom, Cirila i Metodija 23"></iframe>
     </div>
   </div>
 </section>
+</main>
 
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-col">
-      <div class="logo footer-logo">UNICOM<span>GRADNJA</span></div>
-      <p>Izgradnja i prodaja stanova. Kvalitet u koji možete da se uzdate.</p>
+      <a href="index.html" class="logo"><svg class="logo-mark" viewBox="0 0 26 30" aria-hidden="true"><rect y="0" width="26" height="4" fill="#c9973a"/><rect y="6.5" width="26" height="4" fill="currentColor"/><rect y="13" width="26" height="4" fill="currentColor"/><rect y="19.5" width="26" height="4" fill="currentColor"/><rect y="26" width="26" height="4" fill="currentColor"/></svg><span class="logo-text">UNICOM <span>GRADNJA</span></span></a>
+      <p>Investitor i graditelj stambenih objekata u Novom Sadu.</p>
     </div>
     <div class="footer-col">
-      <h4>Navigacija</h4>
-      <a href="index.html">Početna</a>
+      <h4>Stanovi</h4>
+      <a href="projekat.html">Prešernova 8</a>
+      <a href="projekat.html#stanovi">Slobodni stanovi</a>
+      <a href="projekti.html">Svi projekti</a>
+    </div>
+    <div class="footer-col">
+      <h4>Firma</h4>
       <a href="o-nama.html">O nama</a>
-      <a href="projekti.html">Projekti</a>
       <a href="reference.html">Reference</a>
       <a href="kontakt.html">Kontakt</a>
     </div>
     <div class="footer-col">
       <h4>Kontakt</h4>
-      <p>Cirila i Metodija 23, Novi Sad</p>
-      <p>021 503 810</p>
-      <p>info@unicominvest.rs</p>
+      <p>Cirila i Metodija 23<br>21000 Novi Sad</p>
+      <a href="tel:+38121503810">021 503 810</a>
+      <a href="mailto:info@unicominvest.rs">info@unicominvest.rs</a>
+      <p>Ponedeljak – petak, 9–17 h</p>
     </div>
   </div>
   <div class="footer-bottom">
     <div class="container">
-      <p>&copy; 2026 Unicom Gradnja. Sva prava zadržana.</p>
+      <p>&copy; 2026 Unicom doo, Novi Sad. Sva prava zadržana.</p>
     </div>
   </div>
 </footer>
 
-<script src="js/script.js?v=17"></script>
+<!-- Donja traka sa 2 glavne akcije — vidi se samo na telefonu -->
+<div class="mobile-bar">
+  <a href="tel:+38121503810" class="btn btn-dark">Pozovite</a>
+  <a href="projekat.html#stanovi" class="btn btn-primary">Slobodni stanovi</a>
+</div>
+
+<script src="js/script.js?v=18"></script>
 </body>
 </html>

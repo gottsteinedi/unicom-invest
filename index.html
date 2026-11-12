@@ -3,144 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unicom Gradnja &mdash; Izgradnja i prodaja stanova</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=18">
+<title>Unicom Gradnja | Novi stanovi u Prešernovoj ulici, Novi Sad</title>
+<meta name="description" content="Stanovi u izgradnji direktno od investitora: Prešernova 8, Novi Sad. 54 stana, Pr + 4, završetak 2027, cena od 2.700 €/m².">
+<meta name="theme-color" content="#23282b">
+<!-- Kako izgleda link kad se podeli (Viber, Facebook, WhatsApp...).
+     Kad proradi domen, zameni https://gottsteinedi.github.io/unicom-invest/ sa https://unicomgradnja.rs/ -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Unicom Gradnja">
+<meta property="og:title" content="Unicom Gradnja | Novi stanovi u Prešernovoj ulici, Novi Sad">
+<meta property="og:description" content="Stanovi u izgradnji direktno od investitora: Prešernova 8, Novi Sad. 54 stana, Pr + 4, završetak 2027, cena od 2.700 €/m².">
+<meta property="og:image" content="https://gottsteinedi.github.io/unicom-invest/images/presernova-4/hero.jpg">
+<meta property="og:url" content="https://gottsteinedi.github.io/unicom-invest/">
+<meta property="og:locale" content="sr_RS">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/style.css?v=22">
 </head>
 <body>
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href="index.html" class="logo">UNICOM<span>GRADNJA</span></a>
+    <a href="index.html" class="logo" aria-label="Unicom Gradnja, početna"><svg class="logo-mark" viewBox="0 0 26 30" aria-hidden="true"><rect y="0" width="26" height="4" fill="#c9973a"/><rect y="6.5" width="26" height="4" fill="currentColor"/><rect y="13" width="26" height="4" fill="currentColor"/><rect y="19.5" width="26" height="4" fill="currentColor"/><rect y="26" width="26" height="4" fill="currentColor"/></svg><span class="logo-text">UNICOM <span>GRADNJA</span></span></a>
 
-    <nav class="main-nav" id="main-nav">
-      <a href="index.html" class="active">Početna</a>
-      <a href="o-nama.html">O nama</a>
+    <nav class="main-nav" id="main-nav" aria-label="Glavni meni">
       <a href="projekti.html">Projekti</a>
       <a href="reference.html">Reference</a>
+      <a href="o-nama.html">O nama</a>
       <a href="kontakt.html">Kontakt</a>
     </nav>
 
-    <button class="nav-toggle" id="nav-toggle" aria-label="Otvori meni" aria-expanded="false">
+    <a href="tel:+38121503810" class="header-phone">021 503 810</a>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="Otvori meni" aria-expanded="false" aria-controls="main-nav">
       <span></span><span></span><span></span>
     </button>
   </div>
 </header>
 
-<section class="slider hero" data-autoplay="5000">
-  <div class="slider-slide active" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&h=900&fit=crop&q=80&auto=format')"></div>
-  <div class="slider-slide" style="background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&h=900&fit=crop&q=80&auto=format')"></div>
-  <div class="slider-slide" style="background-image:url('https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=1600&h=900&fit=crop&q=80&auto=format')"></div>
-  <div class="slider-overlay"></div>
+<main>
+<section class="hero" style="background-image:url('images/presernova-4/hero.jpg')">
+  <div class="hero-photo" style="background-image:url('images/presernova-4/hero.jpg')" role="img" aria-label="Render stambenog kompleksa u Prešernovoj ulici"></div>
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <h1>Novi stanovi u Prešernovoj ulici</h1>
+      <p>Prva faza kompleksa od četiri objekta u Novom Sadu. Kupujete direktno od investitora, a dostupnost stanova pratite uživo.</p>
+      <div class="btn-row">
+        <a href="projekat.html#stanovi" class="btn btn-primary">Pogledajte slobodne stanove</a>
+        <a href="tel:+38121503810" class="btn btn-ghost">Pozovite 021 503 810</a>
+      </div>
+    </div>
 
-  <div class="slider-content">
-    <p class="hero-eyebrow">Gradimo poverenje, stan po stan</p>
-    <h1>Vaš novi dom počinje ovde</h1>
-    <p class="hero-sub">Preduzeće za izgradnju i prodaju stanova sa dugogodišnjim iskustvom i završenim projektima u Novom Sadu.</p>
-    <div class="hero-actions">
-      <a href="projekti.html" class="btn btn-primary">Pogledajte aktuelne projekte</a>
-      <a href="o-nama.html" class="btn btn-outline">O nama</a>
-    </div>
-  </div>
-
-  <div class="slider-dots">
-    <button class="slider-dot active" aria-label="Slika 1"></button>
-    <button class="slider-dot" aria-label="Slika 2"></button>
-    <button class="slider-dot" aria-label="Slika 3"></button>
-  </div>
-
-  <button class="slider-arrow slider-prev" aria-label="Prethodna slika">&#10094;</button>
-  <button class="slider-arrow slider-next" aria-label="Sledeća slika">&#10095;</button>
-</section>
-
-<section class="stats">
-  <div class="container stats-grid">
-    <div class="stat">
-      <span class="stat-number">15+</span>
-      <span class="stat-label">godina iskustva</span>
-    </div>
-    <div class="stat">
-      <span class="stat-number">24</span>
-      <span class="stat-label">završena projekta</span>
-    </div>
-    <div class="stat">
-      <span class="stat-number">600+</span>
-      <span class="stat-label">prodatih stanova</span>
-    </div>
-    <div class="stat">
-      <span class="stat-number">5</span>
-      <span class="stat-label">projekata u izgradnji</span>
-    </div>
+    <aside class="site-board" aria-label="Osnovni podaci o projektu">
+      <div class="site-board-head">Prešernova 8 <span>Faza 1</span></div>
+      <dl>
+        <div><dt>Investitor</dt><dd>Unicom doo</dd></div>
+        <div><dt>Lokacija</dt><dd>Prešernova 8, Novi Sad</dd></div>
+        <div><dt>Faza</dt><dd>Prva od četiri</dd></div>
+        <div><dt>Spratnost</dt><dd>Pr + 4</dd></div>
+        <div><dt>Broj stanova</dt><dd>54</dd></div>
+        <div><dt>Ukupna kvadratura</dt><dd>2.740 m²</dd></div>
+        <div><dt>Završetak</dt><dd>2027.</dd></div>
+        <div class="board-price"><dt>Cena</dt><dd>od 2.700 €/m²</dd></div>
+      </dl>
+    </aside>
   </div>
 </section>
 
-<section class="projects-teaser">
+<section class="section section-dark">
+  <div class="container split split-wide-media">
+    <div>
+      <h2>Kompleks Prešernova</h2>
+      <p>Četiri stambena objekta oko zajedničkog unutrašnjeg dvorišta, sa parkingom duž ulice. Gradimo ih u fazama, jedan po jedan, tako da svaka faza bude završena i useljiva pre nego što počne sledeća.</p>
+      <ol class="phases">
+        <li class="phase is-active"><span class="phase-num">1</span><div><strong>Objekat 1</strong><small>Prešernova 8, 54 stana</small></div><span class="phase-status">U izgradnji</span></li>
+        <li class="phase"><span class="phase-num">2</span><div><strong>Objekat 2</strong><small>Druga faza</small></div><span class="phase-status">Sledi</span></li>
+        <li class="phase"><span class="phase-num">3</span><div><strong>Objekat 3</strong><small>Treća faza</small></div><span class="phase-status">Sledi</span></li>
+        <li class="phase"><span class="phase-num">4</span><div><strong>Objekat 4</strong><small>Četvrta faza</small></div><span class="phase-status">Sledi</span></li>
+      </ol>
+      <div class="btn-row"><a href="projekat.html" class="btn btn-primary">Detalji o prvoj fazi</a></div>
+    </div>
+    <div class="split-media">
+      <img src="images/presernova-4/9.jpg" alt="Pogled iz vazduha na kompleks Prešernova: četiri objekta oko unutrašnjeg dvorišta" loading="lazy" width="1600" height="1066">
+    </div>
+  </div>
+</section>
+
+<section class="section">
   <div class="container">
     <div class="section-head">
-      <h2>Aktuelni projekti</h2>
-      <p>Pregledajte stambene objekte koji su trenutno u izgradnji ili prodaji.</p>
+      <div>
+        <h2>Zašto kupiti od nas</h2>
+        <p>Šta dobijate kada stan kupujete direktno od firme koja ga gradi.</p>
+      </div>
     </div>
-
-    <div class="projects-grid">
-      <a href="projekat.html" class="project-card">
-        <div class="project-thumb" style="background-image:url('images/presernova-4/2.jpg')">
-          <span class="badge badge-active">U izgradnji</span>
-        </div>
-        <div class="project-info">
-          <h3>Prešernova 8</h3>
-          <p>Novi Sad</p>
-          <span class="project-meta">Prva faza &middot; Rok završetka: 2027.</span>
-        </div>
-      </a>
-    </div>
-
-    <div class="teaser-cta">
-      <a href="projekti.html" class="btn btn-primary">Svi projekti</a>
+    <div class="benefits">
+      <div class="benefit"><h3>Direktno od investitora</h3><p>Razgovarate sa ljudima koji grade zgradu. Bez posrednika, sa jasnim odgovorima o stanu, rokovima i uslovima.</p></div>
+      <div class="benefit"><h3>Gradimo samo u Novom Sadu</h3><p>Novi Sad je jedini grad u kome gradimo. Lokacije, izvođače i tržište poznajemo iz prve ruke.</p></div>
+      <div class="benefit"><h3>Dostupnost uživo</h3><p>Tabela stanova na sajtu se ažurira čim se stan rezerviše ili proda, pa uvek vidite šta je zaista slobodno.</p></div>
+      <div class="benefit"><h3>Povraćaj PDV-a za prvi stan</h3><p>Ako kupujete prvi stan i ispunjavate zakonske uslove, možete ostvariti povraćaj PDV-a. Objasnićemo vam postupak.</p></div>
     </div>
   </div>
 </section>
 
-<section class="about-teaser">
-  <div class="container about-grid">
-    <div class="about-text">
-      <h2>O preduzeću</h2>
-      <p>Unicom Gradnja je preduzeće posvećeno kvalitetnoj i pouzdanoj izgradnji stambenih objekata. Kroz dugogodišnje iskustvo, gradimo domove koji spajaju funkcionalnost, kvalitet materijala i pažljivo planiranje &mdash; od temelja do useljenja.</p>
-      <a href="o-nama.html" class="link-arrow">Saznajte više o nama &rarr;</a>
+<section class="section section-beton">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Kako do stana</h2>
+        <p>Četiri koraka od izbora do ključeva.</p>
+      </div>
     </div>
-    <div class="about-image" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=700&h=500&fit=crop&q=80&auto=format')"></div>
+      <div class="steps">
+        <div class="step"><h3>Izaberite stan</h3><p>Pregledajte slobodne stanove u tabeli ili nas pozovite, pa ćemo zajedno suziti izbor.</p></div>
+        <div class="step"><h3>Rezervišite</h3><p>Dogovaramo izabrani stan, cenu i način plaćanja, i stan rezervišemo na vaše ime.</p></div>
+        <div class="step"><h3>Potpišite ugovor</h3><p>Kupoprodajni ugovor se overava kod javnog beležnika, kako zakon nalaže za kupovinu nepokretnosti.</p></div>
+        <div class="step"><h3>Uselite se</h3><p>Po završetku gradnje i tehničkom prijemu objekta predajemo vam ključeve.</p></div>
+      </div>
+      <p class="note">Ako kupujete prvi stan, možete imati pravo na povraćaj PDV-a, uz ispunjene zakonske uslove. Rado ćemo vam objasniti postupak i pripremiti potrebnu dokumentaciju sa naše strane.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container split split-facts">
+    <div>
+      <h2>O preduzeću</h2>
+      <p>Unicom je porodična firma iz Novog Sada. Kao investitor vodimo projekte od plana do predaje ključeva, sa fokusom na kvalitet gradnje, poštovanje rokova i otvoren odnos prema kupcima.</p>
+      <a href="o-nama.html" class="text-link">Više o nama</a>
+    </div>
+    <div class="facts facts-stacked">
+      <div class="fact"><strong>15+</strong><span>godina iskustva</span></div>
+      <div class="fact"><strong>24</strong><span>završena projekta</span></div>
+      <div class="fact"><strong>600+</strong><span>prodatih stanova</span></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<section class="cta-band">
+  <div class="container">
+    <div>
+      <h2>Imate pitanje o stanu?</h2>
+      <p>Pozovite nas radnim danima od 9 do 17 h ili dođite u kancelariju u Ulici Cirila i Metodija 23.</p>
+    </div>
+    <div class="btn-row">
+      <a href="tel:+38121503810" class="btn btn-dark">Pozovite 021 503 810</a>
+      <a href="kontakt.html" class="btn btn-ghost">Kontakt i adresa</a>
+    </div>
   </div>
 </section>
 
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-col">
-      <div class="logo footer-logo">UNICOM<span>GRADNJA</span></div>
-      <p>Izgradnja i prodaja stanova. Kvalitet u koji možete da se uzdate.</p>
+      <a href="index.html" class="logo"><svg class="logo-mark" viewBox="0 0 26 30" aria-hidden="true"><rect y="0" width="26" height="4" fill="#c9973a"/><rect y="6.5" width="26" height="4" fill="currentColor"/><rect y="13" width="26" height="4" fill="currentColor"/><rect y="19.5" width="26" height="4" fill="currentColor"/><rect y="26" width="26" height="4" fill="currentColor"/></svg><span class="logo-text">UNICOM <span>GRADNJA</span></span></a>
+      <p>Investitor i graditelj stambenih objekata u Novom Sadu.</p>
     </div>
     <div class="footer-col">
-      <h4>Navigacija</h4>
-      <a href="index.html">Početna</a>
+      <h4>Stanovi</h4>
+      <a href="projekat.html">Prešernova 8</a>
+      <a href="projekat.html#stanovi">Slobodni stanovi</a>
+      <a href="projekti.html">Svi projekti</a>
+    </div>
+    <div class="footer-col">
+      <h4>Firma</h4>
       <a href="o-nama.html">O nama</a>
-      <a href="projekti.html">Projekti</a>
       <a href="reference.html">Reference</a>
       <a href="kontakt.html">Kontakt</a>
     </div>
     <div class="footer-col">
       <h4>Kontakt</h4>
-      <p>Cirila i Metodija 23, Novi Sad</p>
-      <p>021 503 810</p>
-      <p>info@unicominvest.rs</p>
+      <p>Cirila i Metodija 23<br>21000 Novi Sad</p>
+      <a href="tel:+38121503810">021 503 810</a>
+      <a href="mailto:info@unicominvest.rs">info@unicominvest.rs</a>
+      <p>Ponedeljak – petak, 9–17 h</p>
     </div>
   </div>
   <div class="footer-bottom">
     <div class="container">
-      <p>&copy; 2026 Unicom Gradnja. Sva prava zadržana.</p>
+      <p>&copy; 2026 Unicom doo, Novi Sad. Sva prava zadržana.</p>
     </div>
   </div>
 </footer>
 
-<script src="js/script.js?v=17"></script>
+<!-- Donja traka sa 2 glavne akcije — vidi se samo na telefonu -->
+<div class="mobile-bar">
+  <a href="tel:+38121503810" class="btn btn-dark">Pozovite</a>
+  <a href="projekat.html#stanovi" class="btn btn-primary">Slobodni stanovi</a>
+</div>
+
+<script src="js/script.js?v=18"></script>
 </body>
 </html>
