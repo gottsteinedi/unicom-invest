@@ -191,7 +191,7 @@ function initApartments() {
   var metaUkupnoStanova = document.getElementById('meta-ukupno-stanova');
   var metaUkupnaKvadratura = document.getElementById('meta-ukupna-kvadratura');
 
-  var itemsPerPage = 20; /* koliko stanova po strani; strane se pojavljuju tek kad ima više od 20 redova */
+  var itemsPerPage = 12; /* koliko stanova po strani; strane se pojavljuju tek kad ima više od 12 redova */
   var currentPage = 1;
 
   var modal = document.getElementById('sketch-modal');
@@ -327,8 +327,8 @@ function initApartments() {
   function renderTable() {
     var allRows = Array.from(tbody.querySelectorAll('tr'));
     var filtered = getFilteredRows();
-    /* Do 20 redova (npr. kad je izabran sprat ili tip) sve je na jednoj strani, bez brojeva.
-       Preko 20 (npr. svi spratovi i svi tipovi) tabela se deli na strane po 20. */
+    /* Do 12 redova (npr. kad je izabran sprat ili tip) sve je na jednoj strani, bez brojeva.
+       Preko 12 tabela se deli na strane po 12. */
     var effectivePerPage = (isMobileTable() || filtered.length <= itemsPerPage) ? Math.max(filtered.length, 1) : itemsPerPage;
     var totalPages = Math.max(1, Math.ceil(filtered.length / effectivePerPage));
     if (currentPage > totalPages) currentPage = totalPages;
