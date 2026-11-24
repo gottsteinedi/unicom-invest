@@ -127,17 +127,6 @@ img { max-width: 100%; display: block; }
 .main-nav a:hover { border-bottom-color: var(--beton-tamni); }
 .main-nav a.active { border-bottom-color: var(--oker); }
 
-.header-phone {
-  font-weight: 600;
-  font-size: 15px;
-  padding: 10px 16px;
-  border: 1.5px solid var(--antracit);
-  border-radius: var(--radius);
-  white-space: nowrap;
-  transition: background 0.2s, color 0.2s;
-}
-.header-phone:hover { background: var(--antracit); color: var(--fasada); }
-
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -150,10 +139,6 @@ img { max-width: 100%; display: block; }
   cursor: pointer;
 }
 .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--antracit); }
-
-@media (max-width: 900px) {
-  .header-phone { display: none; } /* na užem ekranu telefon je u donjoj traci / meniju */
-}
 
 @media (max-width: 720px) {
   :root { --header-h: 64px; }
@@ -702,4 +687,57 @@ a.project-card:hover { border-color: var(--antracit); }
   }
   .mobile-bar .btn { padding: 13px 10px; font-size: 15px; }
   body { padding-bottom: 76px; }
+}
+
+
+/* ==========================================================================
+   PROJEKAT — Video prezentacija (dugme na galeriji + prozor sa videom)
+   ========================================================================== */
+.slider-video-btn {
+  position: absolute; z-index: 3; left: 18px; bottom: 14px;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 10px 18px 10px 12px; border: none; border-radius: 999px;
+  background: var(--oker); color: var(--antracit);
+  font-family: inherit; font-weight: 650; font-size: 15px; cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25); transition: background 0.2s;
+}
+.slider-video-btn:hover { background: #d8a84d; }
+.play-icon {
+  width: 26px; height: 26px; border-radius: 50%; background: var(--antracit);
+  position: relative; flex-shrink: 0;
+}
+.play-icon::after {
+  content: ''; position: absolute; left: 10px; top: 7px;
+  border-style: solid; border-width: 6px 0 6px 9px;
+  border-color: transparent transparent transparent var(--oker);
+}
+@media (max-width: 720px) {
+  .slider-video-btn { left: 12px; bottom: 10px; font-size: 14px; padding: 8px 14px 8px 9px; }
+  .slider.gallery .slider-dots { left: auto; right: 64px; transform: none; }
+}
+
+.video-modal { padding: 24px; }
+.video-box { position: relative; width: 100%; max-width: 1100px; background: var(--antracit-dublji); border-top: 8px solid var(--oker); }
+.video-box video { display: block; width: 100%; max-height: calc(90vh - 20px); aspect-ratio: 16 / 9; background: #000; }
+.video-close { top: -54px; right: 0; color: var(--fasada); font-size: 38px; }
+@media (max-width: 720px) {
+  .video-modal { padding: 12px; }
+  .video-close { top: -48px; }
+}
+
+
+/* ==========================================================================
+   SVE STRANICE — Dugmad "Pozovite" samo na mobilnom
+   Na računaru i tabletu poziv nema smisla: umesto dugmeta "Pozovite" stoji
+   link ka stranici Kontakt (.only-desktop), a broj telefona (footer, kontakt
+   strana) ostaje vidljiv kao običan tekst, bez klika.
+   "Mobilni" = uzak ekran (do 720px) ili telefon položen vodoravno.
+   ========================================================================== */
+.only-mobile { display: none !important; }
+a[href^="tel:"] { pointer-events: none; cursor: text; text-decoration: none !important; }
+@media (max-width: 720px), (pointer: coarse) and (max-height: 500px) {
+  .only-mobile { display: inline-flex !important; }
+  .only-desktop { display: none !important; }
+  a[href^="tel:"] { pointer-events: auto; cursor: pointer; }
+  .contact-item a.value[href^="tel:"] { text-decoration: underline !important; }
 }

@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initGalleryFilter();
   initLightbox();
   initApartments();
+  initVideo();
 });
 
 function initNavToggle() {
@@ -638,4 +639,40 @@ function uniqueSorted(values, rankFn) {
   });
   unique.sort(function (a, b) { return rankFn(a) - rankFn(b); });
   return unique;
+}
+
+
+/* ==========================================================================
+   PROJEKAT — Video prezentacija
+   Video se NE pušta sam: korisnik klikne "Pogledajte video", otvori se
+   prozor i tek tada krene. Zvuk se gasi preko ugrađenih kontrola plejera.
+   ========================================================================== */
+function initVideo() {
+  var modal = document.getElementById('video-modal');
+  var video = document.getElementById('project-video');
+  if (!modal || !video) return;
+  var closeBtn = document.getElementById('video-close');
+
+  function open() {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    var p = video.play();
+    if (p && p.catch) p.catch(function () {});
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function close() {
+    video.pause();
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-video-open]').forEach(function (btn) {
+    btn.addEventListener('click', open);
+  });
+  if (closeBtn) closeBtn.addEventListener('click', close);
+  modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('open')) close();
+  });
 }
