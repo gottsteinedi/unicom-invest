@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initApartments();
   initVideo();
   initMapFacades();
+  initBackToTop();
 });
 
 function initNavToggle() {
@@ -748,5 +749,33 @@ function initMapFacades() {
       iframe.allowFullscreen = true;
       btn.replaceWith(iframe);
     });
+  });
+}
+
+
+/* ==========================================================================
+   SVE STRANICE — dugme "Na vrh" (dole desno, pojavi se kad se skroluje)
+   Pravi se ovde u JS-u, pa ne mora da se dodaje u svaki HTML fajl.
+   ========================================================================== */
+function initBackToTop() {
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'to-top';
+  btn.setAttribute('aria-label', 'Na vrh stranice');
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5l-7 7m7-7l7 7M12 5v14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  document.body.appendChild(btn);
+
+  var ticking = false;
+  function update() {
+    btn.classList.toggle('is-visible', window.scrollY > 600);
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  update();
+
+  btn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }

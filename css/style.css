@@ -632,8 +632,7 @@ a.project-card:hover { border-color: var(--antracit); }
 
 /* Detalji izvedbe ispod galerije */
 .finish-list { margin-top: 56px; padding: 32px 36px; background: var(--beton); border-left: 6px solid var(--oker); }
-.finish-list h2 { font-size: 24px; margin-bottom: 8px; }
-.finish-note { color: var(--grafit); margin-bottom: 20px; }
+.finish-list h2 { font-size: 24px; margin-bottom: 16px; }
 .finish-list ul { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 40px; }
 .finish-list li { position: relative; padding-left: 22px; color: var(--tekst); }
 .finish-list li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 10px; height: 10px; background: var(--oker); }
@@ -767,3 +766,26 @@ a[href^="tel:"] { pointer-events: none; cursor: text; text-decoration: none !imp
   a[href^="tel:"] { pointer-events: auto; cursor: pointer; }
   .contact-item a.value[href^="tel:"] { text-decoration: underline !important; }
 }
+
+
+/* ==========================================================================
+   SVE STRANICE — dugme "Na vrh"
+   ========================================================================== */
+.to-top {
+  position: fixed; right: 24px; bottom: 24px; z-index: 95;
+  width: 48px; height: 48px; border-radius: 50%; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--antracit); color: var(--fasada);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+  opacity: 0; visibility: hidden; transform: translateY(12px);
+  transition: opacity 0.25s, transform 0.25s, visibility 0.25s, background 0.2s;
+}
+.to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+.to-top:hover { background: var(--oker); color: var(--antracit); }
+.to-top:focus-visible { outline: 3px solid var(--oker); outline-offset: 3px; }
+/* na telefonu iznad donje trake sa dugmadima */
+@media (max-width: 720px) {
+  .to-top { right: 14px; bottom: calc(84px + env(safe-area-inset-bottom)); width: 44px; height: 44px; }
+}
+/* da ne stoji preko otvorenog videa / uvećane slike */
+body:has(.modal.open) .to-top { display: none; }
