@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initLightbox();
   initApartments();
   initVideo();
+  initMapFacades();
 });
 
 function initNavToggle() {
@@ -37,10 +38,22 @@ function initSliders() {
     var current = 0;
     var timer;
 
+    /* Slajdovi 2..N imaju sliku u data-bg i učitavaju se tek kad zatrebaju
+       (trenutni + sledeći), da stranica ne povuče sve slike odjednom. */
+    function loadSlide(i) {
+      var s = slides[(i + slides.length) % slides.length];
+      if (s && s.dataset.bg && !s.style.backgroundImage) {
+        s.style.backgroundImage = "url('" + s.dataset.bg + "')";
+      }
+    }
+
     function goTo(index) {
       slides[current].classList.remove('active');
       if (dots[current]) dots[current].classList.remove('active');
       current = (index + slides.length) % slides.length;
+      loadSlide(current);
+      loadSlide(current + 1);
+      loadSlide(current - 1);
       slides[current].classList.add('active');
       if (dots[current]) dots[current].classList.add('active');
       root.dataset.current = current; /* da initLightbox zna koji je slajd trenutno prikazan */
@@ -64,6 +77,8 @@ function initSliders() {
 
     root.dataset.current = current;
     resetAutoplay();
+    // kad se stranica učita, unapred spremi drugi slajd da prvi klik bude bez čekanja
+    window.addEventListener('load', function () { loadSlide(1); });
   });
 }
 
@@ -111,7 +126,11 @@ function initLightbox() {
   var prevBtn = document.getElementById('lightbox-prev');
   var nextBtn = document.getElementById('lightbox-next');
 
+  var caption = document.getElementById('lightbox-caption');
+  var counter = document.getElementById('lightbox-counter');
+
   var currentUrls = [];
+  var currentCaptions = [];
   var currentIndex = 0;
 
   /* Izvlači URL slike iz inline "background-image: url(...)" stila —
@@ -122,18 +141,43 @@ function initLightbox() {
     return match ? match[1] : '';
   }
 
+  /* Velika slika: data-full (reference) ili background-image (slajder projekta) */
+  function fullUrl(el) {
+    return el.dataset.full || el.dataset.bg || backgroundImageUrl(el);
+  }
+
   function show(index) {
-    currentIndex = (index + currentUrls.length) % currentUrls.length;
+    var n = currentUrls.length;
+    currentIndex = (index + n) % n;
     image.src = currentUrls[currentIndex];
+    image.alt = currentCaptions[currentIndex] || 'Uvećana slika';
+    if (caption) caption.textContent = currentCaptions[currentIndex] || '';
+    if (counter) counter.textContent = n > 1 ? (currentIndex + 1) + ' / ' + n : '';
+    // unapred učitaj sledeću sliku da listanje bude bez čekanja
+    if (n > 1) { var pre = new Image(); pre.src = currentUrls[(currentIndex + 1) % n]; }
+  }
+
+  function open() {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
   }
 
   document.querySelectorAll('.gallery-img').forEach(function (img) {
     img.addEventListener('click', function () {
       var group = img.closest('.gallery-project-block') || document;
       var groupImages = Array.from(group.querySelectorAll('.gallery-img'));
-      currentUrls = groupImages.map(backgroundImageUrl);
+      currentUrls = groupImages.map(fullUrl);
+      currentCaptions = groupImages.map(function (el) {
+        var i = el.querySelector('img');
+        return i ? i.alt : '';
+      });
       show(groupImages.indexOf(img));
-      modal.classList.add('open');
+      open();
     });
   });
 
@@ -145,23 +189,34 @@ function initLightbox() {
       var root = btn.closest('.slider');
       if (!root) return;
       var slides = Array.from(root.querySelectorAll('.slider-slide'));
-      currentUrls = slides.map(backgroundImageUrl);
+      currentUrls = slides.map(fullUrl);
+      currentCaptions = [];
       show(parseInt(root.dataset.current, 10) || 0);
-      modal.classList.add('open');
+      open();
     });
   });
 
   if (prevBtn) prevBtn.addEventListener('click', function () { show(currentIndex - 1); });
   if (nextBtn) nextBtn.addEventListener('click', function () { show(currentIndex + 1); });
-  if (closeBtn) closeBtn.addEventListener('click', function () { modal.classList.remove('open'); });
+  if (closeBtn) closeBtn.addEventListener('click', close);
 
   modal.addEventListener('click', function (e) {
-    if (e.target === modal) modal.classList.remove('open');
+    if (e.target === modal) close();
+  });
+
+  // Telefon: prevlačenje prstom levo/desno menja sliku
+  var touchX = null;
+  modal.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; }, { passive: true });
+  modal.addEventListener('touchend', function (e) {
+    if (touchX === null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    touchX = null;
+    if (Math.abs(dx) > 40) show(currentIndex + (dx < 0 ? 1 : -1));
   });
 
   document.addEventListener('keydown', function (e) {
     if (!modal.classList.contains('open')) return;
-    if (e.key === 'Escape') modal.classList.remove('open');
+    if (e.key === 'Escape') close();
     if (e.key === 'ArrowLeft') show(currentIndex - 1);
     if (e.key === 'ArrowRight') show(currentIndex + 1);
   });
@@ -674,5 +729,24 @@ function initVideo() {
   modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && modal.classList.contains('open')) close();
+  });
+}
+
+
+/* ==========================================================================
+   Google mapa na klik (projekat.html, kontakt.html)
+   Umesto da se mapa (~0,5–1 MB) učita odmah, prikazuje se dugme
+   "Prikaži mapu"; tek na klik se ubacuje pravi Google Maps iframe.
+   ========================================================================== */
+function initMapFacades() {
+  document.querySelectorAll('.map-facade').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var iframe = document.createElement('iframe');
+      iframe.src = btn.dataset.mapSrc;
+      iframe.title = btn.dataset.mapTitle || 'Mapa';
+      iframe.loading = 'lazy';
+      iframe.allowFullscreen = true;
+      btn.replaceWith(iframe);
+    });
   });
 }

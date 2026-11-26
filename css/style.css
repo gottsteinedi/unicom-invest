@@ -567,6 +567,14 @@ a.project-card:hover { border-color: var(--antracit); }
    ========================================================================== */
 .map-wrap { border: 1px solid var(--beton-tamni); height: 420px; background: var(--beton); }
 .map-wrap iframe { width: 100%; height: 100%; border: 0; display: block; }
+.map-facade { width: 100%; height: 100%; border: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; cursor: pointer; font: inherit; color: var(--antracit);
+  background-color: var(--beton);
+  background-image: linear-gradient(var(--beton-tamni) 1px, transparent 1px), linear-gradient(90deg, var(--beton-tamni) 1px, transparent 1px);
+  background-size: 48px 48px; }
+.map-facade strong { font-size: 17px; background: var(--fasada); padding: 4px 10px; }
+.map-facade:hover .btn-dark { background: #3a4246; }
+.map-pin { width: 34px; height: 34px; background: var(--oker); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); position: relative; box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
+.map-pin::after { content: ''; position: absolute; inset: 11px; border-radius: 50%; background: var(--antracit); }
 @media (max-width: 720px) { .map-wrap { height: 300px; } }
 
 /* ==========================================================================
@@ -610,12 +618,26 @@ a.project-card:hover { border-color: var(--antracit); }
 .gallery-meta-row p { color: var(--grafit); font-size: 15px; }
 .gallery-stats { display: flex; gap: 32px; font-size: 14px; color: var(--grafit); }
 .gallery-stats strong { display: block; font-size: 20px; color: var(--antracit); font-stretch: 115%; }
-.gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 220px; gap: 12px; }
+.gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 240px; gap: 12px; }
 .gallery-grid .gallery-img:first-child { grid-column: span 2; grid-row: span 2; }
-@media (max-width: 900px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; } }
-@media (max-width: 560px) { .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 220px; } .gallery-grid .gallery-img:first-child { grid-column: auto; grid-row: auto; } }
-.gallery-img { background-size: cover; background-position: center; cursor: zoom-in; transition: opacity 0.2s; }
-.gallery-img:hover { opacity: 0.88; }
+@media (max-width: 900px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 190px; } }
+@media (max-width: 560px) { .gallery-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 130px; gap: 8px; } }
+.gallery-img { position: relative; display: block; padding: 0; border: none; overflow: hidden; background: var(--beton) center / cover no-repeat; cursor: zoom-in; font: inherit; }
+.gallery-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+.gallery-img:hover img { transform: scale(1.04); }
+.gallery-img:focus-visible { outline: 3px solid var(--oker); outline-offset: 2px; }
+.gallery-caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 28px 14px 12px; text-align: left; font-size: 14px; font-weight: 600; color: var(--fasada); background: linear-gradient(180deg, transparent, rgba(0,0,0,0.6)); opacity: 0; transform: translateY(6px); transition: opacity 0.25s, transform 0.25s; }
+.gallery-img:hover .gallery-caption, .gallery-img:focus-visible .gallery-caption { opacity: 1; transform: none; }
+@media (hover: none) { .gallery-caption { display: none; } }
+
+/* Detalji izvedbe ispod galerije */
+.finish-list { margin-top: 56px; padding: 32px 36px; background: var(--beton); border-left: 6px solid var(--oker); }
+.finish-list h2 { font-size: 24px; margin-bottom: 8px; }
+.finish-note { color: var(--grafit); margin-bottom: 20px; }
+.finish-list ul { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 40px; }
+.finish-list li { position: relative; padding-left: 22px; color: var(--tekst); }
+.finish-list li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 10px; height: 10px; background: var(--oker); }
+@media (max-width: 720px) { .finish-list { padding: 24px 20px; margin-top: 40px; } .finish-list ul { grid-template-columns: 1fr; } }
 
 /* Poruka dok galerija referenci nema nijednu sliku — sama nestaje
    čim se u #reference-gallery doda prva .gallery-img */
@@ -644,7 +666,11 @@ a.project-card:hover { border-color: var(--antracit); }
 .modal-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .modal-actions .btn { flex: 1 1 220px; } /* oba dugmeta iste visine i širine */
 
-.lightbox-image { max-width: 96vw; max-height: 92vh; display: block; }
+.lightbox-modal { background: rgba(20,23,25,0.94); }
+.lightbox-image { max-width: 92vw; max-height: 84vh; display: block; box-shadow: 0 10px 40px rgba(0,0,0,0.5); user-select: none; }
+.lightbox-info { position: fixed; left: 0; right: 0; bottom: 18px; display: flex; justify-content: center; gap: 18px; color: rgba(255,255,255,0.85); font-size: 15px; pointer-events: none; }
+.lightbox-info #lightbox-caption { font-weight: 600; }
+.lightbox-info #lightbox-counter { color: rgba(255,255,255,0.6); font-variant-numeric: tabular-nums; }
 .lightbox-close, .lightbox-arrow { position: fixed; z-index: 201; border: none; border-radius: 50%; background: rgba(255,255,255,0.16); color: var(--fasada); cursor: pointer; }
 .lightbox-close { top: 20px; right: 20px; width: 46px; height: 46px; font-size: 26px; line-height: 1; }
 .lightbox-arrow { top: 50%; transform: translateY(-50%); width: 52px; height: 52px; font-size: 18px; }

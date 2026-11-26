@@ -17,7 +17,8 @@
 <meta property="og:locale" content="sr_RS">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=27">
+<link rel="preload" href="images/presernova-4/1.webp" as="image">
+<link rel="stylesheet" href="css/style.css?v=30">
 </head>
 <body>
 
@@ -49,15 +50,15 @@
 
     <div class="project-top">
       <div class="slider gallery">
-        <div class="slider-slide active" style="background-image:url('images/presernova-4/1.jpg')"></div>
-        <div class="slider-slide" style="background-image:url('images/presernova-4/2.jpg')"></div>
-        <div class="slider-slide" style="background-image:url('images/presernova-4/3.jpg')"></div>
-        <div class="slider-slide" style="background-image:url('images/presernova-4/4.jpg')"></div>
-        <div class="slider-slide" style="background-image:url('images/presernova-4/5.jpg')"></div>
-        <div class="slider-slide" style="background-image:url('images/presernova-4/6.jpg')"></div>
-        <div class="slider-slide" style="background-image:url('images/presernova-4/7.jpg')"></div>
-        <div class="slider-slide" style="background-image:url('images/presernova-4/8.jpg')"></div>
-        <div class="slider-slide" style="background-image:url('images/presernova-4/9.jpg')"></div>
+        <div class="slider-slide active" style="background-image:url('images/presernova-4/1.webp')"></div>
+        <div class="slider-slide" data-bg="images/presernova-4/2.webp"></div>
+        <div class="slider-slide" data-bg="images/presernova-4/3.webp"></div>
+        <div class="slider-slide" data-bg="images/presernova-4/4.webp"></div>
+        <div class="slider-slide" data-bg="images/presernova-4/5.webp"></div>
+        <div class="slider-slide" data-bg="images/presernova-4/6.webp"></div>
+        <div class="slider-slide" data-bg="images/presernova-4/7.webp"></div>
+        <div class="slider-slide" data-bg="images/presernova-4/8.webp"></div>
+        <div class="slider-slide" data-bg="images/presernova-4/9.webp"></div>
         <div class="slider-dots">
         <button class="slider-dot active" aria-label="Slika 1"></button>
         <button class="slider-dot" aria-label="Slika 2"></button>
@@ -117,7 +118,7 @@
       </ol>
     </div>
     <div class="split-media">
-      <img src="images/presernova-4/9.jpg" alt="Pogled iz vazduha na kompleks Prešernova sa oznakama četiri objekta i faza" loading="lazy" width="1600" height="1066">
+      <img src="images/presernova-4/9-srednja.webp" srcset="images/presernova-4/9-mala.webp 800w, images/presernova-4/9-srednja.webp 1200w, images/presernova-4/9.webp 1600w" sizes="(max-width: 900px) 100vw, 640px" alt="Pogled iz vazduha na kompleks Prešernova sa oznakama četiri objekta i faza" loading="lazy" width="1600" height="1066">
     </div>
   </div>
 </section>
@@ -184,7 +185,12 @@
       </div>
     </div>
     <div class="map-wrap">
-      <iframe src="https://www.google.com/maps?q=Pre%C5%A1ernova+8,+Novi+Sad,+Srbija&z=16&output=embed" loading="lazy" title="Mapa: Prešernova 8, Novi Sad"></iframe>
+      <!-- Mapa se učitava tek na klik (štedi ~0,5–1 MB podataka) — vidi initMapFacades u script.js -->
+      <button type="button" class="map-facade" data-map-src="https://www.google.com/maps?q=Pre%C5%A1ernova+8,+Novi+Sad,+Srbija&amp;z=16&amp;output=embed" data-map-title="Mapa: Prešernova 8, Novi Sad">
+        <span class="map-pin" aria-hidden="true"></span>
+        <strong>Prešernova 8, Novi Sad</strong>
+        <span class="btn btn-dark">Prikaži mapu</span>
+      </button>
     </div>
   </div>
 </section>
@@ -277,6 +283,6 @@
   <a href="projekat.html#stanovi" class="btn btn-primary">Slobodni stanovi</a>
 </div>
 
-<script src="js/script.js?v=20"></script>
+<script src="js/script.js?v=22"></script>
 </body>
 </html>

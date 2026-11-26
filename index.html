@@ -17,7 +17,9 @@
 <meta property="og:locale" content="sr_RS">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=27">
+<link rel="preload" href="images/presernova-4/hero.webp" as="image" media="(min-width: 901px)">
+<link rel="preload" href="images/presernova-4/hero-mala.webp" as="image" media="(max-width: 900px)">
+<link rel="stylesheet" href="css/style.css?v=30">
 </head>
 <body>
 
@@ -39,8 +41,8 @@
 </header>
 
 <main>
-<section class="hero" style="background-image:url('images/presernova-4/hero.jpg')">
-  <div class="hero-photo" style="background-image:url('images/presernova-4/hero.jpg')" role="img" aria-label="Render stambenog kompleksa u Prešernovoj ulici"></div>
+<section class="hero" style="background-image:url('images/presernova-4/hero.webp')">
+  <div class="hero-photo" style="background-image:url('images/presernova-4/hero-mala.webp')" role="img" aria-label="Render stambenog kompleksa u Prešernovoj ulici"></div>
   <div class="container hero-inner">
     <div class="hero-text">
       <h1>Novi stanovi u Prešernovoj ulici</h1>
@@ -82,7 +84,7 @@
       <div class="btn-row"><a href="projekat.html" class="btn btn-primary">Detalji o prvoj fazi</a></div>
     </div>
     <div class="split-media">
-      <img src="images/presernova-4/9.jpg" alt="Pogled iz vazduha na kompleks Prešernova: četiri objekta oko unutrašnjeg dvorišta" loading="lazy" width="1600" height="1066">
+      <img src="images/presernova-4/9-srednja.webp" srcset="images/presernova-4/9-mala.webp 800w, images/presernova-4/9-srednja.webp 1200w, images/presernova-4/9.webp 1600w" sizes="(max-width: 900px) 100vw, 640px" alt="Pogled iz vazduha na kompleks Prešernova: četiri objekta oko unutrašnjeg dvorišta" loading="lazy" width="1600" height="1066">
     </div>
   </div>
 </section>
@@ -191,6 +193,6 @@
   <a href="projekat.html#stanovi" class="btn btn-primary">Slobodni stanovi</a>
 </div>
 
-<script src="js/script.js?v=18"></script>
+<script src="js/script.js?v=22"></script>
 </body>
 </html>

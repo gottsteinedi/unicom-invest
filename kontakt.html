@@ -17,7 +17,7 @@
 <meta property="og:locale" content="sr_RS">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=27">
+<link rel="stylesheet" href="css/style.css?v=30">
 </head>
 <body>
 
@@ -62,7 +62,12 @@
     </div>
 
     <div class="map-wrap">
-      <iframe src="https://www.google.com/maps?q=Cirila+i+Metodija+23,+Novi+Sad&output=embed" loading="lazy" title="Mapa: kancelarija Unicom, Cirila i Metodija 23"></iframe>
+      <!-- Mapa se učitava tek na klik (štedi ~0,5–1 MB podataka) — vidi initMapFacades u script.js -->
+      <button type="button" class="map-facade" data-map-src="https://www.google.com/maps?q=Cirila+i+Metodija+23,+Novi+Sad&amp;output=embed" data-map-title="Mapa: kancelarija Unicom, Cirila i Metodija 23">
+        <span class="map-pin" aria-hidden="true"></span>
+        <strong>Cirila i Metodija 23, Novi Sad</strong>
+        <span class="btn btn-dark">Prikaži mapu</span>
+      </button>
     </div>
   </div>
 </section>
@@ -107,6 +112,6 @@
   <a href="projekat.html#stanovi" class="btn btn-primary">Slobodni stanovi</a>
 </div>
 
-<script src="js/script.js?v=18"></script>
+<script src="js/script.js?v=22"></script>
 </body>
 </html>
