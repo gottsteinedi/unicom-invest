@@ -266,6 +266,32 @@ function initApartments() {
 
   if (!csvUrl) return;
 
+  /* Na telefonu se ne prikazuje svih 50+ stanova odjednom, nego po 12,
+     sa dugmetom "Prikaži još stanova" ispod tabele. */
+  var mobileStep = 12;
+  var mobileShown = mobileStep;
+  var showMoreBtn = document.createElement('button');
+  showMoreBtn.type = 'button';
+  showMoreBtn.className = 'btn btn-ghost show-more-btn';
+  showMoreBtn.hidden = true;
+  if (tableWrap) tableWrap.insertAdjacentElement('afterend', showMoreBtn);
+  showMoreBtn.addEventListener('click', function () {
+    mobileShown += mobileStep;
+    renderTable();
+  });
+
+  /* Kad neko otvori link projekat.html#stanovi, browser skroluje dok je
+     tabela još prazna (stanovi stižu iz Sheet-a tek posle ~0,5–1 s), pa
+     stranica završi na pogrešnom mestu. Zato, kad se tabela popuni,
+     ponovo skrolujemo do naslova "Stanovi u ponudi" — ali samo u prvih
+     nekoliko sekundi, da ne trgnemo stranicu nekome ko je već skrolovao. */
+  var pageLoadedAt = Date.now();
+  function scrollToHashAfterLoad() {
+    if (location.hash !== '#stanovi' || Date.now() - pageLoadedAt > 4000) return;
+    var section = document.getElementById('stanovi');
+    if (section) section.scrollIntoView({ behavior: 'instant', block: 'start' });
+  }
+
   /* cache: 'no-store' + jedinstven "_=..." parametar na kraju linka teraju
      i browser i Google-ov CDN da svaki put vrate SVEŽ CSV, ne stari
      zapamćeni odgovor — bez ovoga izmene u Sheet-u znale su da ne stignu
@@ -287,6 +313,7 @@ function initApartments() {
       renderTable();
       if (tableStatus) tableStatus.style.display = 'none';
       if (tableWrap) tableWrap.style.display = '';
+      scrollToHashAfterLoad();
     })
     .catch(function (err) {
       console.error('Ne mogu da učitam stanove iz Google Sheets-a:', err);
@@ -329,7 +356,7 @@ function initApartments() {
           '<span class="view-btn-text">Pregled</span>' +
           '<span class="view-btn-icon" aria-hidden="true">&#128269;</span>' +
         '</button></td>' +
-        '<td class="col-stan">' + a.stan + '</td>' +
+        '<td class="col-stan"><strong>' + a.stan + '</strong><span class="stan-sprat">' + a.sprat + '</span></td>' +
         '<td class="col-sprat">' + a.sprat + '</td>' +
         '<td class="col-tip">' + capitalize(a.tip) + '</td>' +
         '<td class="col-sobe">' + tipToSobe(a.tip) + '</td>' +
@@ -368,6 +395,7 @@ function initApartments() {
   function attachFilterEvents() {
     function applyFilters() {
       currentPage = 1; /* nova pretraga/filter uvek počinje od prve strane */
+      mobileShown = mobileStep;
       renderTable();
     }
 
@@ -419,6 +447,15 @@ function initApartments() {
 
     var start = (currentPage - 1) * effectivePerPage;
     var visibleOnPage = filtered.slice(start, start + effectivePerPage);
+
+    /* Telefon: prikaži prvih mobileShown stanova + dugme za još */
+    var remaining = 0;
+    if (isMobileTable()) {
+      remaining = Math.max(0, filtered.length - mobileShown);
+      visibleOnPage = filtered.slice(0, mobileShown);
+    }
+    showMoreBtn.hidden = remaining === 0;
+    showMoreBtn.textContent = 'Prikaži još stanova (' + remaining + ')';
 
     allRows.forEach(function (row) { row.style.display = 'none'; });
     visibleOnPage.forEach(function (row) { row.style.display = ''; });
@@ -485,29 +522,52 @@ function initApartments() {
             '<span>Status<strong>' + status + '</strong></span>';
         }
 
-        showSketch(row.dataset.skicaPdf);
-        if (modal) modal.classList.add('open');
+        showSketch(row.dataset.skicaPdf, row.dataset.stan);
+        openModal();
       });
     });
   }
 
-  /* Puni #modal-sketch-wrap zavisno od toga da li stan ima data-skica-pdf
-     (link ka PDF-u na Google Drive-u, iz SKICA kolone u sheet-u). Ako ima —
-     ugrađen PDF viewer + dugme za preuzimanje. Ako nema — generička
-     placeholder skica, dok se pravi PDF ne doda u sheet za taj stan. */
-  function showSketch(driveLink) {
+  /* Puni #modal-sketch-wrap za izabrani stan. Skice su na sajtu, po oznaci stana:
+       - slika za prikaz:     images/skice/S8.webp
+       - PDF za preuzimanje:  skice-pdf/S8.pdf
+     Nova ili izmenjena skica = zameni PDF u skice-pdf/ i napravi novu sliku.
+     Rezerva (npr. za stanove iz sledećih faza dok se ne ubace fajlovi):
+     ako slike nema, koristi se link iz kolone SKICA u Sheet-u (PDF sa
+     Google Drive-a), a ako ni njega nema — privremena (generička) skica. */
+  function showSketch(driveLink, stan) {
     var urls = driveLink ? driveEmbedUrls(driveLink) : null;
 
-    if (urls) {
-      modalSketchWrap.innerHTML = '<iframe class="modal-sketch-frame" src="' + urls.preview + '" title="Skica stana (PDF)"></iframe>';
-      modalDownload.href = urls.download;
-      modalDownload.style.display = '';
-    } else {
-      modalSketchWrap.innerHTML =
-        '<img class="modal-sketch" src="images/skica-placeholder.svg" alt="Skica stana (privremeni primer)">' +
-        '<p class="modal-empty-note">Prava skica (PDF) za ovaj stan uskoro stiže.</p>';
-      modalDownload.style.display = 'none';
+    function showFallback() {
+      if (urls) {
+        modalSketchWrap.innerHTML = '<iframe class="modal-sketch-frame" src="' + urls.preview + '" title="Skica stana (PDF)"></iframe>';
+        modalDownload.href = urls.download;
+        modalDownload.removeAttribute('download');
+        modalDownload.style.display = '';
+      } else {
+        modalSketchWrap.innerHTML =
+          '<img class="modal-sketch" src="images/skica-placeholder.svg" alt="Skica stana (privremeni primer)">' +
+          '<p class="modal-empty-note">Prava skica za ovaj stan uskoro stiže.</p>';
+        modalDownload.style.display = 'none';
+      }
     }
+
+    if (!stan) { showFallback(); return; }
+
+    var name = encodeURIComponent(stan);
+    var src = 'images/skice/' + name + '.webp';
+    modalDownload.href = 'skice-pdf/' + name + '.pdf';
+    modalDownload.setAttribute('download', 'Presernova-8-stan-' + stan + '.pdf');
+    modalDownload.style.display = '';
+    modalSketchWrap.innerHTML =
+      '<a class="modal-sketch-link" href="' + src + '" target="_blank" rel="noopener" title="Otvori skicu u punoj veličini">' +
+        '<img class="modal-sketch" src="' + src + '" alt="Skica stana ' + stan + '">' +
+      '</a>' +
+      '<p class="modal-empty-note">Kliknite na skicu za prikaz u punoj veličini.</p>';
+    var img = modalSketchWrap.querySelector('img');
+    img.addEventListener('error', function () {
+      if (modalSketchWrap.contains(img)) showFallback();
+    });
   }
 
   /* Google Drive share link (npr. .../file/d/ID/view?usp=sharing ili
@@ -523,16 +583,30 @@ function initApartments() {
     };
   }
 
-  if (modalClose && modal) {
-    modalClose.addEventListener('click', function () { modal.classList.remove('open'); });
+  /* Otvaranje/zatvaranje prozora sa detaljima stana. Fokus tastature ide
+     na dugme "Zatvori", a posle zatvaranja se vraća tamo gde je bio
+     (bitno za korisnike tastature i čitača ekrana). */
+  var lastFocused = null;
+  function openModal() {
+    if (!modal) return;
+    lastFocused = document.activeElement;
+    modal.classList.add('open');
+    if (modalClose) modalClose.focus({ preventScroll: true });
   }
+  function closeModal() {
+    if (!modal || !modal.classList.contains('open')) return;
+    modal.classList.remove('open');
+    if (lastFocused && lastFocused.focus) lastFocused.focus({ preventScroll: true });
+  }
+
+  if (modalClose) modalClose.addEventListener('click', closeModal);
   if (modal) {
     modal.addEventListener('click', function (e) {
-      if (e.target === modal) modal.classList.remove('open');
+      if (e.target === modal) closeModal();
     });
   }
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && modal) modal.classList.remove('open');
+    if (e.key === 'Escape') closeModal();
   });
 
   /* Ako se pređe preko 720px praga (rotacija telefona, promena veličine
@@ -555,7 +629,7 @@ function initApartments() {
 /* Sirovi CSV tekst -> niz objekata { stan, tip, povrsina, komercijalna,
    sprat, status, skicaPdf }. Nazivi kolona MORAJU odgovarati zaglavlju u
    Google Sheet-u (prvi red): STAN, TIP, POVRSINA, Komercijalna površina (m2),
-   Sprat, STATUS, SKICA. Ako promeniš naziv kolone u sheet-u, promeni ga i
+   Sprat, STATUS, SKICA (SKICA je opciona — skice su sada u images/skice i skice-pdf). Ako promeniš naziv kolone u sheet-u, promeni ga i
    ovde (u pozivima funkcije col). */
 function parseApartmentsCSV(text) {
   var table = parseCSV(text);
@@ -571,7 +645,11 @@ function parseApartmentsCSV(text) {
     return i === -1 ? '' : (row[i] || '').trim();
   }
 
-  return dataRows.map(function (row) {
+  /* Red bez oznake stana (kolona STAN prazna) se preskače — tako prazan ili
+     poluprazan red na dnu Sheet-a ne pravi "- m² -" red u tabeli. */
+  return dataRows.filter(function (row) {
+    return col(row, 'STAN') !== '';
+  }).map(function (row) {
     return {
       stan: col(row, 'STAN'),
       tip: col(row, 'TIP').toLowerCase(),
@@ -765,9 +843,19 @@ function initBackToTop() {
   btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5l-7 7m7-7l7 7M12 5v14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   document.body.appendChild(btn);
 
+  /* Na telefonu dugme stoji iznad donje trake, desno — baš preko tačkica
+     statusa u tabeli stanova. Dok je tabela ispod dugmeta, sakrij ga. */
+  var tableWrap = document.getElementById('table-wrap');
+  function overTable() {
+    if (!tableWrap || window.innerWidth > 720) return false;
+    var r = tableWrap.getBoundingClientRect();
+    var btnTop = window.innerHeight - 140, btnBottom = window.innerHeight - 80;
+    return r.height > 0 && r.top < btnBottom && r.bottom > btnTop;
+  }
+
   var ticking = false;
   function update() {
-    btn.classList.toggle('is-visible', window.scrollY > 600);
+    btn.classList.toggle('is-visible', window.scrollY > 600 && !overTable());
     ticking = false;
   }
   window.addEventListener('scroll', function () {

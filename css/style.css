@@ -424,7 +424,9 @@ a.project-card:hover { border-color: var(--antracit); }
 .slider-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 0.8s ease; }
 .slider-slide.active { opacity: 1; }
 .slider-dots { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; gap: 8px; }
-.slider-dot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--fasada); background: transparent; cursor: pointer; padding: 0; }
+.slider-dot { position: relative; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--fasada); background: transparent; cursor: pointer; padding: 0; }
+/* nevidljiva veća površina za klik/prst (~25×25 px), tačkica ostaje ista */
+.slider-dot::before { content: ''; position: absolute; inset: -8px; }
 .slider-dot.active { background: var(--oker); border-color: var(--oker); }
 .slider-arrow, .slider-zoom-btn {
   position: absolute;
@@ -455,7 +457,9 @@ a.project-card:hover { border-color: var(--antracit); }
   .slider-arrow { width: 38px; height: 38px; font-size: 14px; }
   .slider-prev { left: 10px; }
   .slider-next { right: 10px; }
-  .slider-dot { width: 7px; height: 7px; }
+  .slider-dots { gap: 12px; }
+  .slider-dot { width: 9px; height: 9px; }
+  .slider-dot::before { inset: -9px -7px; }
 }
 
 /* ==========================================================================
@@ -517,6 +521,10 @@ a.project-card:hover { border-color: var(--antracit); }
 .view-btn:hover { background: var(--antracit); color: var(--fasada); }
 .view-btn-icon { display: none; }
 .th-short { display: none; }
+.stan-sprat { display: none; }
+.apartments-table td.col-stan strong { font-weight: inherit; }
+.show-more-btn { display: flex; width: 100%; justify-content: center; margin: -8px 0 24px; }
+.show-more-btn[hidden] { display: none; }
 
 @media (max-width: 720px) {
   .apartments-filters { width: 100%; }
@@ -524,7 +532,11 @@ a.project-card:hover { border-color: var(--antracit); }
   .apartments-filters select { min-width: 0; width: 100%; }
   .apartments-table { min-width: 0; }
   /* Na telefonu: ceo red je dugme (otvara detalje), pa kolona Pregled nije potrebna */
-  .apartments-table .col-pregled, .apartments-table .col-stan, .apartments-table .col-sobe { display: none; }
+  /* Kolona Stan ostaje (S1, S2… da kupac zna koji stan da pomene kad zove),
+     a sprat se piše sitno ispod oznake — zato posebna kolona Sprat nije potrebna */
+  .apartments-table .col-pregled, .apartments-table .col-sprat, .apartments-table .col-sobe { display: none; }
+  .apartments-table td.col-stan strong { display: block; font-weight: 600; }
+  .apartments-table .stan-sprat { display: block; font-size: 12.5px; color: var(--grafit); margin-top: 1px; white-space: nowrap; }
   .th-long { display: none; }
   .th-short { display: inline; }
   .apartments-table th, .apartments-table td { padding: 12px 8px; font-size: 14px; }
@@ -655,7 +667,8 @@ a.project-card:hover { border-color: var(--antracit); }
 .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 30px; cursor: pointer; color: var(--grafit); line-height: 1; }
 .modal-box h3 { font-size: 24px; margin-bottom: 18px; }
 .modal-sketch-wrap { margin-bottom: 18px; }
-.modal-sketch { width: 100%; border: 1px solid var(--beton-tamni); background: var(--beton); }
+.modal-sketch { display: block; width: 100%; height: auto; border: 1px solid var(--beton-tamni); background: var(--beton); }
+.modal-sketch-link { display: block; cursor: zoom-in; }
 .modal-sketch-frame { width: 100%; height: 480px; border: 1px solid var(--beton-tamni); background: var(--beton); display: block; }
 @media (max-width: 720px) { .modal { padding: 12px; } .modal-box { padding: 24px 18px; } .modal-sketch-frame { height: 360px; } }
 .modal-empty-note { font-size: 14px; color: var(--grafit); text-align: center; margin: 10px auto 0; }

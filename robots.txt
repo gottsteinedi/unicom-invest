@@ -1,0 +1,7 @@
+# Dozvoljeno indeksiranje celog sajta.
+# Napomena: Google čita robots.txt samo sa korena domena — ovaj fajl počinje
+# da se koristi kad sajt pređe na unicomgradnja.rs. Tada promeni i adresu ispod.
+User-agent: *
+Allow: /
+
+Sitemap: https://gottsteinedi.github.io/unicom-invest/sitemap.xml
