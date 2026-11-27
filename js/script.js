@@ -351,17 +351,19 @@ function initApartments() {
       tr.dataset.komercijalna = parseFloat(String(a.komercijalna).replace(',', '.')) || 0;
       if (statusInfo.cls === 'status-prodato') tr.classList.add('is-sold'); /* prodati stanovi su sivlji u tabeli */
 
+      /* esc() — sve što stiže iz Sheet-a ubacuje se kao običan tekst, nikad
+         kao HTML/kod (zaštita ako neko u Sheet upiše nešto zlonamerno). */
       tr.innerHTML =
-        '<td class="col-pregled"><button class="view-btn" aria-label="Pregled stana ' + a.stan + '">' +
+        '<td class="col-pregled"><button class="view-btn" aria-label="Pregled stana ' + esc(a.stan) + '">' +
           '<span class="view-btn-text">Pregled</span>' +
           '<span class="view-btn-icon" aria-hidden="true">&#128269;</span>' +
         '</button></td>' +
-        '<td class="col-stan"><strong>' + a.stan + '</strong><span class="stan-sprat">' + a.sprat + '</span></td>' +
-        '<td class="col-sprat">' + a.sprat + '</td>' +
-        '<td class="col-tip">' + capitalize(a.tip) + '</td>' +
-        '<td class="col-sobe">' + tipToSobe(a.tip) + '</td>' +
-        '<td class="col-komercijalna">' + formatBroj(a.komercijalna) + ' m&sup2;</td>' +
-        '<td class="col-status"><span class="status-pill ' + statusInfo.cls + '">' + statusInfo.label + '</span></td>';
+        '<td class="col-stan"><strong>' + esc(a.stan) + '</strong><span class="stan-sprat">' + esc(a.sprat) + '</span></td>' +
+        '<td class="col-sprat">' + esc(a.sprat) + '</td>' +
+        '<td class="col-tip">' + esc(capitalize(a.tip)) + '</td>' +
+        '<td class="col-sobe">' + esc(tipToSobe(a.tip)) + '</td>' +
+        '<td class="col-komercijalna">' + esc(formatBroj(a.komercijalna)) + ' m&sup2;</td>' +
+        '<td class="col-status"><span class="status-pill ' + statusInfo.cls + '">' + esc(statusInfo.label) + '</span></td>';
 
       tbody.appendChild(tr);
     });
@@ -515,11 +517,11 @@ function initApartments() {
         if (modalTitle) modalTitle.textContent = 'Stan ' + stan;
         if (modalMeta) {
           modalMeta.innerHTML =
-            '<span>Sprat<strong>' + sprat + '</strong></span>' +
-            '<span>Tip<strong>' + tip + '</strong></span>' +
-            '<span>Sobe<strong>' + sobe + '</strong></span>' +
-            '<span>Kvadratura<strong>' + komercijalna + '</strong></span>' +
-            '<span>Status<strong>' + status + '</strong></span>';
+            '<span>Sprat<strong>' + esc(sprat) + '</strong></span>' +
+            '<span>Tip<strong>' + esc(tip) + '</strong></span>' +
+            '<span>Sobe<strong>' + esc(sobe) + '</strong></span>' +
+            '<span>Kvadratura<strong>' + esc(komercijalna) + '</strong></span>' +
+            '<span>Status<strong>' + esc(status) + '</strong></span>';
         }
 
         showSketch(row.dataset.skicaPdf, row.dataset.stan);
@@ -563,7 +565,7 @@ function initApartments() {
     modalDownload.style.display = '';
     modalSketchWrap.innerHTML =
       '<a class="modal-sketch-link" href="' + src + '" target="_blank" rel="noopener" title="Otvori skicu u punoj veličini">' +
-        '<img class="modal-sketch" src="' + srcMala + '" width="1600" height="1131" decoding="async" alt="Skica stana ' + stan + '">' +
+        '<img class="modal-sketch" src="' + srcMala + '" width="1600" height="1131" decoding="async" alt="Skica stana ' + esc(stan) + '">' +
       '</a>' +
       '<p class="modal-empty-note">Kliknite na skicu za prikaz u punoj veličini.</p>';
     var img = modalSketchWrap.querySelector('img');
@@ -633,6 +635,14 @@ function initApartments() {
    Google Sheet-u (prvi red): STAN, TIP, POVRSINA, Komercijalna površina (m2),
    Sprat, STATUS, SKICA (SKICA je opciona — skice su sada u images/skice i skice-pdf). Ako promeniš naziv kolone u sheet-u, promeni ga i
    ovde (u pozivima funkcije col). */
+/* Pretvara tekst u bezbedan HTML: < > & " ' postaju obični znakovi,
+   pa se ništa iz Sheet-a ne može izvršiti kao kod na stranici. */
+function esc(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function parseApartmentsCSV(text) {
   var table = parseCSV(text);
   if (!table.length) return [];
