@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bezbednost (Content Security Policy): browser sme da učita kod, stilove, slike i
+     fontove samo sa ovog sajta; spolja samo tabelu stanova iz Google Sheet-a i
+     Google mapu / Drive pregled. Ubačena tuđa skripta se neće izvršiti.
+     Kad budeš dodavao newsletter (Mailchimp/Brevo...), njegova adresa mora da se doda ovde. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' https://docs.google.com https://*.googleusercontent.com; frame-src https://www.google.com https://maps.google.com https://drive.google.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Prešernova 8, Novi Sad | Stanovi u izgradnji | Unicom Gradnja</title>
 <meta name="description" content="Novi stanovi na Telepu, Prešernova 8, Novi Sad: 54 stana, Pr + 4, u blizini Šodroša i Dunava, sa dovoljno parking mesta. Završetak jun 2027, cena od 2.700 €/m².">
 <meta name="theme-color" content="#23282b">
@@ -287,6 +293,6 @@
   <a href="projekat.html#stanovi" class="btn btn-primary">Slobodni stanovi</a>
 </div>
 
-<script src="js/script.js?v=26"></script>
+<script src="js/script.js?v=28"></script>
 </body>
 </html>

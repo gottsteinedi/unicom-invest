@@ -4,3 +4,6 @@ images/Presernova 4/
 videos/VIDEO_RENDER_sporije_muzika.mp4
 # arhiva slika (originali iz zip-a) — samo lokalno, ne ide na GitHub
 _arhiva/
+
+# podešavanja alata (Claude) — lokalno, ne ide na GitHub
+.claude/

@@ -529,7 +529,8 @@ function initApartments() {
   }
 
   /* Puni #modal-sketch-wrap za izabrani stan. Skice su na sajtu, po oznaci stana:
-       - slika za prikaz:     images/skice/S8.webp
+       - slika za prikaz:     images/skice/S8-mala.webp (1600 px)
+       - puna veličina:       images/skice/S8.webp (na klik)
        - PDF za preuzimanje:  skice-pdf/S8.pdf
      Nova ili izmenjena skica = zameni PDF u skice-pdf/ i napravi novu sliku.
      Rezerva (npr. za stanove iz sledećih faza dok se ne ubace fajlovi):
@@ -555,13 +556,14 @@ function initApartments() {
     if (!stan) { showFallback(); return; }
 
     var name = encodeURIComponent(stan);
-    var src = 'images/skice/' + name + '.webp';
+    var src = 'images/skice/' + name + '.webp';          /* velika — otvara se na klik */
+    var srcMala = 'images/skice/' + name + '-mala.webp'; /* manja (~100 KB) — prikaz u prozoru */
     modalDownload.href = 'skice-pdf/' + name + '.pdf';
     modalDownload.setAttribute('download', 'Presernova-8-stan-' + stan + '.pdf');
     modalDownload.style.display = '';
     modalSketchWrap.innerHTML =
       '<a class="modal-sketch-link" href="' + src + '" target="_blank" rel="noopener" title="Otvori skicu u punoj veličini">' +
-        '<img class="modal-sketch" src="' + src + '" alt="Skica stana ' + stan + '">' +
+        '<img class="modal-sketch" src="' + srcMala + '" width="1600" height="1131" decoding="async" alt="Skica stana ' + stan + '">' +
       '</a>' +
       '<p class="modal-empty-note">Kliknite na skicu za prikaz u punoj veličini.</p>';
     var img = modalSketchWrap.querySelector('img');
